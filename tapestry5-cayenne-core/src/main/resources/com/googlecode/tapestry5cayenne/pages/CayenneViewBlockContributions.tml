@@ -1,0 +1,13 @@
+<div xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
+<t:block t:id="to_one_viewer">
+  <t:outputraw value="toOneString"/>
+</t:block>
+
+<t:block t:id="to_many_collection_viewer">
+  <ul t:type="cay/ToManyViewer" source="collection"/>
+</t:block>
+
+<t:block t:id="to_many_map_viewer">
+  <ul t:type="cay/ToManyViewer" source="mapValues" />
+</t:block>
+</div>

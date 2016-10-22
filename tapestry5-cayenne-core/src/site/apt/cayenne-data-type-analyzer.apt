@@ -1,0 +1,60 @@
+CayenneDataTypeAnalyzer and Related Components
+
+Introduction
+
+	Tapestry 5 uses the BeanModelSource interface to obtain a runtime model of a class, identifying editable and/or readable properties, and a "data type" for each of those properties.  The data type is used to determine what component should be used to either render or edit a particular property's value.  The CayenneDataTypeAnalyzer uses metadata available from the Cayenne runtime environment to determine which properties refer to "to one" or "to many" relationships, and define the property type accordingly.  Furthermore, the tapestry5-cayenne library contributes components that can be used to view and edit these data types.
+
+Details
+
+	The CayenneDataTypeAnalyzer looks at the property name and the class containing the property to determine if there is a Cayenne relationship for that class with that name.  If so, it determines the type of relationship, and uses that as the basis for the datatype in the following manner.
+
+  * to-one properties are mapped to the property type "to_one"
+  
+  * to-many properties are mapped to:
+  
+  	** to_many_collection for Collection-based collections
+    
+	** to_many_map for Map-based collections
+    
+	** UnsupportedOperationException is thrown for anything else
+
+* Supporting custom-mappings
+
+	Tapestry's DefaultDataTypeAnalyzer supports simple custom mapping of property types to data types by contributing to a map-based configuration mapping from class-type to property type. Although the CayenneDataTypeAnalyzer is placed before the DefaultDataTypeAnalyzer in the chain of command of DataTypeAnalyzers, the CayenneDataTypeAnalyzer will respect custom mappings.  It does this by first checking with the DefaultDataTypeAnalyzer to see if the data-type has been custom-mapped.  If so, it returns the custom-mapped data type.  If not, it attempts to analyze the property.
+
+* Contributed Components
+
+	The tapestry5-cayenne library makes several contributions to the BeanBlockSource to make relationship viewing and editing automatic.  
+
+** to_one
+
+	Currently, to_one relationships are supported for both editing and viewing.  
+
+	The editor builds a list of possible entities to select from based on the relationship's target ObjEntity, and allows one to be selected via an html select element. 
+
+	The viewer simply displays a string representation of the selected object.
+
+	In both the editor and the viewer, the string representation of the objects is determined first by looking for a "@Label" annotation on any of the methods.  @Label is an annotation provided by the tapestry5-cayenne library. You can use it as follows:
+
++-----------------------------------------------+
+public class Painting extends _Painting {
+  @Label
+  public String getTitle() {
+    return super.getTitle();
+  }
+}
++-----------------------------------------------+
+
+	Now a select list of Paintings will have the paintings listed by title.  As a bonus, the select list elements will be ordered by the @Label.  @Label can be applied to a mapped property, or to a pseudo-property.  The tapestry5-cayenne will use an ordering strategy appropriate to the property type.  So if the property is a database-backed property, the sort will occur in the select query.  If it is a pseudo-property, the sort will occur in-memory.
+
+	If no @Label annotation is found, the objects will be displayed via their toString method. If the object is "Comparable", an in-memory sort of the objects will occur, based on the Object's "compareTo" method.  If no @Label annotation is found, and the objects are not comparable, no sorting will occur.
+
+** to_many
+
+	Viewing of to_many relationships is currently supported out of the box, but editing is not.  The current viewer works as follows:
+
+   	* If there are only a few objects in the collection or map (currently less than 20), each object is displayed, according to the same rules that apply for rendering a to_one relationship (@Label, toString, etc.).  The items are rendered in a list, styled to allow for in-place scrolling by default.
+  
+ 	* If there are many objects in the collection or map (currently 20 or more), the relationship is represented as: X associated items, where X is the size of the collection.
+
+	There are plans to extend the viewer to either link to a grid-based view of the collection items, or to extend the list logic using an ajax-based approach to lazily fetch the data as needed.

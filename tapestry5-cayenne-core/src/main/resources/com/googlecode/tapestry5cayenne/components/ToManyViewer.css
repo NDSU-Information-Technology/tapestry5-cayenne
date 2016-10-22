@@ -1,0 +1,14 @@
+div.t-beandisplay div.t-beandisplay-value ul.t-cayenne-tomany-display {
+  padding-left: 255px;
+  margin-left: 15px;
+}
+    
+ul.t-cayenne-tomany-display {
+  list-style: circle;
+  margin-bottom: 5px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  max-height: 6em;
+  overflow-y: auto;
+}
+  

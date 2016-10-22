@@ -1,0 +1,15 @@
+CayenneBeanModelSource
+
+Introduction
+
+	Tapestry 5 provides powerful features for quickly viewing and editing objects, including the "Grid", "BeanEditor", "BeanEditForm", and 				"BeanDisplay" components.  At the heart of these components is a service that analyzes beans and determines what properties to edit or view, and how. This service is called the "BeanModelSource".  The tapestry5-cayenne library provides a custom implementation of BeanModelSource for objects persisted via Cayenne.
+
+Details
+
+	In order to ensure a seamless developer experience, the tapestry5-cayenne library overrides the default BeanModelSource implementation provided by tapestry, but calls into the default to do most of the work.  This means that anywhere a BeanModelSource is @Injected or used, the CayenneBeanModelSource will be used.  Because the CayenneBeanModelSource calls into the default BeanModelSource, non-persistent objects are gracefully handled, and all of the same semantics apply as for the default BeanModelSource.  For instance, the ordering of properties is still based on the method orders, as well as the ordering-related annotations provided by tapestry 5.
+
+	The CayenneBeanModelSource adds two features to the default BeanModelSource.
+   	
+	* It understands properties that are specific to cayenne persistent objects, that should be non-visual (such as persistenceState) so they will not show up when editing or viewing persistent objects.
+   	
+	* It pushes the class being edited onto the environment (wrapped in BeanModelTypeHolder).  This allows the CayenneDataTypeAnalyzer and other custom analyzers to have access to the parent class of the property while analyzing the property.

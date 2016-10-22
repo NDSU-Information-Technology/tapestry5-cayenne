@@ -1,0 +1,38 @@
+Configuring the ObjectContextProvider
+
+	The client implementation of the ObjectContextProvider requires configuration in order to establish a connection to the ROP
+	server.  Configuration is done via contributions of symbol values to application defaults.
+
+Symbols
+
+*-------------------------------------------+---------------------------------------------------+-----------------------------+
+|               Symbol                      |                      Meaning                      |        Default Value        |
+*-------------------------------------------+---------------------------------------------------+-----------------------------+
+| TapestryCayenneModule.WEB_SERVICE_URL     | The URL of the ROP server.                        | "http://localhost:8080/cws" |
+| TapestryCayenneModule.USERNAME            | Username to authenticate against ROP server with. | ""                          |
+| TapestryCayenneModule.PASSWORD            | Password to authenticate against ROP server with. | ""                          |
+| TapestryCayenneModule.SHARED_SESSION_NAME | Hessian shared session name.                      | ""                          |
+*-------------------------------------------+---------------------------------------------------+-----------------------------+
+Configuration symbols
+
+	As can be seen in the table of symbol values, the default configuration is to connect to an ROP server running on the localhost
+	that is not using authentication.  In all likelihood, the ROP server is running on a different host.  Perhaps it even requires
+	basic authentication.  This can be easily configured in your project's AppModule:
+	
++----------------------------------------------------------------------------------------------------+
+import com.googlecode.tapestry5cayenne.services.TapestryCayenneModule;
+
+public static void contributeApplicationDefaults(MappedConfiguration<String, String> configuration)
+{
+    // You will likely have other configuration items here.  For example, supported locales,
+    // production mode, and whitespace compression.  That's fine, just add the client module
+    // configuration to your existing contributeApplicationDefaults method.
+
+    // Override CayenneContext parameters.
+    configuration.add(TapestryCayenneModule.WEB_SERVICE_URL, "http://www.example.com:8888/cws");
+    configuration.add(TapestryCayenneModule.USERNAME, "admin");
+    configuration.add(TapestryCayenneModule.PASSWORD, "password");
+}
++----------------------------------------------------------------------------------------------------+
+
+	If your application doesn't use authentication for ROP, just don't contribute username and password values.

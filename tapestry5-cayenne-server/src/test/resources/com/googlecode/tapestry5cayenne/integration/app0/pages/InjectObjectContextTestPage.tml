@@ -1,0 +1,24 @@
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
+
+  <t:if test="currentReallyCurrent">
+  	Injecting the current context really /does/ give you the current context.
+  </t:if>
+  
+  <t:if test="noAnnotationSameAsOCTypeCurrent">
+  	Injecting with no annotation is the same as injecting with the octype current.
+  </t:if>
+  
+  <t:if test="childAnnotationChildOfCurrent">
+  	Injecting with octype child yields child of current context.
+  </t:if>`
+  
+  <t:if test="newContextReallyNew">
+    Injecting with octype new yields a new context, not child of current context.
+  </t:if>
+  
+  <div id="newContextProp">
+  	${newContextProp}
+  </div>
+  
+  <a t:type="actionlink" t:id="invalidateSession">Invalidate Session</a>
+</html>

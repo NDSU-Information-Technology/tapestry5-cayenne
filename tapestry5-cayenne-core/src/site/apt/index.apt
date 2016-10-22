@@ -1,0 +1,6 @@
+Tapestry5-Cayenne Core Module
+
+	The core module provides the basic set of functionality for the server and client modules.  The core module is not used directly.
+	Instead, it is loaded in transitively by maven or is included with the client and server assemblies.
+	
+	Most of the service implementations and components that this project provides are housed in the core module.

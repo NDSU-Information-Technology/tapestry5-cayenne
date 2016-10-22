@@ -1,0 +1,23 @@
+ValueEncoder for Persistent Entities
+
+Introduction
+
+	Any web application must deal with client state.  A common way to deal with state is to store state information in string form on the client side as a request parameter or form field.  Tapestry 5 facilitates this process by providing "Value Encoders" which "magically" convert objects to a client-suitable representation, and then magically converting strings back to their server-side representations.  The tapestry5-cayenne library provides its own ValueEncoder for converting implementations of Cayenne's "Persistent" interface to strings and back.
+
+Details
+
+* Objects With Ids
+
+	The simplest objects to convert to strings are those which have been committed to the database and which have a single primary key column.  These objects are persisted as: ObjEntityName::id.
+
+	In theory, tapestry5-cayenne could provide a value-encoder (or value-encoder factory) for each ObjEntity in a datamap.  This would allow the library to encode objects as simply: id. Doing so results in nicer urls, but has some disadvantages.  By leaving out the ObjEntity name, certain paradigms of conversion become impossible. For example, having an "onActivate" handler that accepts an object of type Persistent, or any particular superclass or super-interface would fail with the id-only strategy, since tapestry (and t5cayenne) will be unable to determine which object type to resolve to.  Hence, both the ObjEntity name and the id are encoded.
+
+* Objects Without Ids
+
+	There are two types of objects without ids: objects which have been created via a constructor, and not yet registered with an ObjectContext, and objects which have been created and registered with an ObjectContext, but not yet committed to the database.  The tapestry5-cayenne value encoder handles both of these objects in the same manner: by delegation.  The encoder delegates to an implementation of NonPersistedObjectStorer.  The task of the object-storer is to somehow "store" the object, and return a string value that can be used to retrieve the object.  The NonPersistedObjectStorer is also responsible for retrieving the object from storage based on the key it provided during storage.  
+
+	The default implementation of NonPersistedObjectStorer simply stores the id-less objects into an application-wide LRUMap, returning the string version of the object's hash code.  This allows applications to run without an HTTPSession, and without consuming too much memory from "dead" objects (objects created, but never again referenced or used, outside of the ObjectStorer).
+
+* Objects with muli-column primary keys
+
+	Objects with multi-column primary keys are not currently supported.  You will need to provide your own ValueEncoder specifically for those entities at this time.

@@ -1,0 +1,259 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.googlecode.tapestry5-cayenne</groupId>
+  <artifactId>tapestry5-cayenne-project</artifactId>
+  <packaging>pom</packaging>
+  <version>0.5.5-ECI-SNAPSHOT</version>
+  <name>Tapestry5-Cayenne Integration</name>
+  <description>Makes integration of Cayenne within Tapestry 5 as easy as possible.</description>
+  <inceptionYear>2008</inceptionYear>
+  <url>http://code.google.com/p/tapestry5-cayenne/</url>
+  <issueManagement>
+    <system>Google Code</system>
+    <url>http://code.google.com/p/tapestry5-cayenne/issues/</url>
+  </issueManagement>
+  <licenses>
+    <license>
+      <name>Apache Software License 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <scm>
+    <url>http://tapestry5-cayenne.googlecode.com/svn/trunk</url>
+  </scm>
+  <developers>
+    <developer>
+      <id>nirvdrum</id>
+      <name>Kevin Menard</name>
+      <email>kmenard@servprise.com</email>
+      <url>http://www.servprise.com/</url>
+      <roles>
+        <role>Developer</role>
+      </roles>
+      <timezone>-5</timezone>
+    </developer>
+    <developer>
+      <id>robert.zeigler</id>
+      <name>Robert Zeigler</name>
+      <email>robert.zeigler@gmail.com</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+      <timezone>-6</timezone>
+    </developer>
+  </developers>
+
+  <mailingLists>
+    <mailingList>
+      <name>Developer List</name>
+      <archive>http://groups.google.com/group/tapestry5-cayenne-development</archive>
+    </mailingList>
+  </mailingLists>
+
+  <modules>
+    <module>tapestry5-cayenne-core</module>
+    <module>tapestry5-cayenne-server</module>
+    <module>tapestry5-cayenne-client</module>
+  </modules>
+
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.apache.tapestry</groupId>
+        <artifactId>tapestry-core</artifactId>
+        <version>${tapestry-release-version}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.tapestry</groupId>
+        <artifactId>tapestry-test</artifactId>
+        <version>${tapestry-release-version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cayenne</groupId>
+        <artifactId>cayenne-client</artifactId>
+        <version>${cayenne-release-version}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cayenne</groupId>
+        <artifactId>cayenne-server</artifactId>
+        <version>${cayenne-release-version}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.testng</groupId>
+        <artifactId>testng</artifactId>
+        <version>5.12.1</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.easymock</groupId>
+        <artifactId>easymock</artifactId>
+        <version>2.2</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>hsqldb</groupId>
+        <artifactId>hsqldb</artifactId>
+        <version>1.8.0.7</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.easymock</groupId>
+        <artifactId>easymock</artifactId>
+        <version>2.3</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>servlet-api</artifactId>
+        <version>2.5</version>
+        <scope>provided</scope>
+      </dependency>
+
+      <!-- Now, artifacts created by sub-modules. -->
+
+      <dependency>
+        <groupId>com.googlecode.tapestry5-cayenne</groupId>
+        <artifactId>tapestry5-cayenne-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>attach-javadocs</id>
+              <goals>
+                <goal>jar</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>attach-sources</id>
+              <goals>
+                <goal>jar</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <source>1.5</source>
+            <target>1.5</target>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>2.0</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+          <configuration>
+            <archive>
+              <manifestEntries>
+                <Tapestry-Module-Classes>com.googlecode.tapestry5cayenne.services.TapestryCayenneModule
+                </Tapestry-Module-Classes>
+              </manifestEntries>
+            </archive>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>license</report>
+              <report>scm</report>
+              <report>project-team</report>
+              <report>mailing-list</report>
+              <report>issue-tracking</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <!-- Version 2.3 is broken: See http://jira.codehaus.org/browse/MJAVADOC-145 -->
+        <!--version>2.2</version -->
+        <configuration>
+          <linksource>true</linksource>
+          <links>
+            <link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
+            <link>http://java.sun.com/j2ee/1.4/docs/api/</link>
+            <link>http://tapestry.apache.org/tapestry5/apidocs/</link>
+            <link>http://cayenne.apache.org/doc/api/</link>
+          </links>
+          <aggregate>true</aggregate>
+        </configuration>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>javadoc</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
+
+  <properties>
+    <cayenne-release-version>3.0.2</cayenne-release-version>
+    <tapestry-release-version>5.3.2</tapestry-release-version>
+  </properties>
+
+  <repositories>
+    <!-- Cayenne repositories. -->
+<!--    <repository>
+      <snapshots />
+      <id>apache.snapshots</id>
+      <url>http://people.apache.org/repo/m2-snapshot-repository</url>
+    </repository>
+    <repository>
+      <id>cayenne.deps</id>
+      <url>http://objectstyle.org/maven2</url>
+    </repository> -->
+    <!-- saiwai repo 
+    <repository>
+      <id>saiwai-repository</id>
+      <url>http://maven.saiwai-solutions.com/</url>
+    </repository> -->
+    <!-- tapestry snapshot repository 
+    <repository>
+      <id>tapestry-snapshots</id>
+      <url>http://tapestry.formos.com/maven-snapshot-repository/</url>
+    </repository> -->
+    <!-- tapestry (pre) release repository 
+    <repository>
+      <id>tapestry-pending-releases</id>
+      <url>http://people.apache.org/~hlship/tapestry-ibiblio-rsynch-repository/</url>
+    </repository> -->
+  </repositories>
+
+</project>

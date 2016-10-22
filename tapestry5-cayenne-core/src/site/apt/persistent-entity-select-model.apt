@@ -1,0 +1,27 @@
+PersistentEntitySelectModel
+
+Introduction
+
+	Often in html forms, the task arises wherein a choice must be made from a variety of database entities, typically in the form of a select component.  Tapestry provides the "select" component to alleviate some of the tedium of this task.  The select component, however, requires a "model" of the data.  The PersistentEntitySelectModel exists to provide an easy and consistent model of Persistent entities for use in conjunction with Select.
+
+Usage
+
+ 	Creating a new model is as simple as: new PersistentEntitySelectModel(PersistentClass.class,objectContext);  PersistentEntitySelectModel will use the metadata provided by Cayenne to lookup a list of entities that match the "PersistentClass" type. Additionally, to ensure that your data is consistently presented throughout your application, the PersistentEntitySelectModel will order the list according to the following rules:
+
+	* @Label - A method annotated with @Label is used to determine the sorting.
+
+	* If the method corresponds to a mapped object property, then the sorting will be done at the database level, ordered by the corresponding database property.
+    
+	* If the method does not correspond to a mapped property, sorting will be done in-memory based on the result of the method invocation. If the result is an instance of Comparable, then the sort will use the "natural" comparison; otherwise, the objects will be sorted according to the result of toString() on the result of the method invocation.
+  
+	* Comparable - There is no @Labeled property, but the objects implement Comparable. In this case, the sort will occur in-memory according to the "natural ordering" of the objects.
+  
+	* If there is no @Label, and the objects are not comparable, no sorting will occur.
+
+Display Value
+
+	The OptionModel used by the PersistentEntitySelectModel uses the object as the value.  The text displayed to the user depends on the class.  
+  
+	* If there is a method in the class annotated with @Label, then the model will invoke the method, call toString on the result, and display the string to the user.
+
+	* If there is no labeled message, toString will be invoked on the object and the result displayed to the user.

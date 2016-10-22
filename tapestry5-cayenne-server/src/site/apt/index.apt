@@ -1,0 +1,22 @@
+Tapestry5-Cayenne Server Module
+
+	The server module is used for traditional (i.e., non-ROP client) apps.  This module cannot be used with the client module
+	in the same Tapestry project.  To use the module in your project you can use the following maven configuration:
+	
++---------------------------------------------------------+
+<dependency>
+    <groupId>com.googlecode.tapestry5-cayenne</groupId>
+    <artifactId>tapestry5-cayenne-server</artifactId>
+    <version>0.1-SNAPSHOT</version>
+</dependency>
++---------------------------------------------------------+
+
+	The artifacts are hosted on the ObjectStyle repository.  If you are using Cayenne in your project, you should already have this
+	repository added.  If not, make sure you have the following:
+	
++-----------------------------------------------+
+<repository>
+    <id>cayenne.deps</id>
+    <url>http://objectstyle.org/maven2</url>
+</repository>
++-----------------------------------------------+

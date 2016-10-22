@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+  ~ Apache License
+  ~ Version 2.0, January 2004
+  ~ http://www.apache.org/licenses/
+  ~
+  ~ Copyright 2008 Kevin Menard
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  -->
+
+<project name="Tapestry5-Cayenne">
+
+    <skin>
+        <groupId>org.apache.tapestry</groupId>
+        <artifactId>maven-skin</artifactId>
+        <version>1.1</version>
+    </skin>
+
+    <publishDate format="yyyy-MM-dd HH:mm:SS"/>
+
+    <body>
+
+        <head>
+            <link rel="stylesheet" type="text/css" media="screen" href="css/custom.css"></link>
+        </head>
+
+        <links>
+            <item name="Tapestry" href="http://tapestry.apache.org/"/>
+			<item name="Cayenne" href="http://cayenne.apache.org/"/>
+        </links>
+
+        <menu name="Tapestry5-Cayenne">
+            <item name="Home" href="index.html"/>
+            <item name="Project Page" href="http://code.google.com/p/tapestry5-cayenne/"/>
+        </menu>
+
+        <menu name="Modules">
+            <item name="Core" href="tapestry5-cayenne-core/"/>
+			<item name="Server" href="tapestry5-cayenne-server/"/>
+            <item name="Client" href="tapestry5-cayenne-client/"/>
+        </menu>
+
+        <menu ref="reports"/>
+
+    </body>
+</project>

@@ -1,0 +1,6 @@
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
+  <body>
+   <div t:id="display"/>
+   <table t:id="gridDisplay"/>
+  </body>
+</html>

@@ -1,0 +1,8 @@
+<div xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
+Test page just to show that we can actually run...
+Cache: ${currentCacheSize}/${maxCacheSize}
+<br/>
+<t:loop t:id="objEntities" value="var:oe">
+  ${var:oe}
+</t:loop>
+</div>

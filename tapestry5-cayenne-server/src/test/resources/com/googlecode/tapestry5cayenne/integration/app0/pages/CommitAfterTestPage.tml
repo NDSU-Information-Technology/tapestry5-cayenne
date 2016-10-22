@@ -1,0 +1,6 @@
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
+	${artist.name}
+	<t:actionlink t:id="commitok" context="artist">Commit Ok</t:actionlink>
+	<t:actionlink t:id="runtimeexception" context="artist">Runtime Exception</t:actionlink>
+	<t:actionlink t:id="checkedexception" context="artist">Checked Exception</t:actionlink>
+</html>
