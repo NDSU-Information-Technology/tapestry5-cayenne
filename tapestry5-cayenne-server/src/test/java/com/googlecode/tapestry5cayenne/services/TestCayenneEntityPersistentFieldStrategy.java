@@ -1,6 +1,5 @@
 package com.googlecode.tapestry5cayenne.services;
 
-import static org.testng.Assert.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -14,6 +13,7 @@ import org.apache.tapestry5.services.PersistentFieldChange;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
 import org.easymock.EasyMock;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -75,14 +75,14 @@ public class TestCayenneEntityPersistentFieldStrategy {
             .andReturn("Artist::" + DataObjectUtils.intPKForObject(_data.get(0)));
         EasyMock.replay(_session);
         Collection<PersistentFieldChange> changes = _strategy.gatherFieldChanges("testPage");
-        assertEquals(changes.size(),1);
+        Assert.assertEquals(changes.size(),1);
         PersistentFieldChange c = changes.iterator().next();
-        assertEquals(c.getComponentId(),"foo");
-        assertEquals(c.getFieldName(),"bar");
+        Assert.assertEquals(c.getComponentId(),"foo");
+        Assert.assertEquals(c.getFieldName(),"bar");
         Artist a = (Artist) c.getValue();
-        assertEquals(a,_data.get(0));
-        assertEquals(a.getName(),"TemporaryChange");
-        assertEquals(a.getPersistenceState(),PersistenceState.MODIFIED);
+        Assert.assertEquals(a,_data.get(0));
+        Assert.assertEquals(a.getName(),"TemporaryChange");
+        Assert.assertEquals(a.getPersistenceState(),PersistenceState.MODIFIED);
     }
     
     public void testGatherFieldChangesWithNull() {
@@ -93,10 +93,10 @@ public class TestCayenneEntityPersistentFieldStrategy {
             .andReturn(null);
         EasyMock.replay(_session);
         Collection<PersistentFieldChange> changes = _strategy.gatherFieldChanges("testPage");
-        assertEquals(changes.size(),1);
+        Assert.assertEquals(changes.size(),1);
         PersistentFieldChange c = changes.iterator().next();
-        assertEquals(c.getComponentId(),"foo");
-        assertEquals(c.getFieldName(),"bar");
-        assertNull(c.getValue());
+        Assert.assertEquals(c.getComponentId(),"foo");
+        Assert.assertEquals(c.getFieldName(),"bar");
+        Assert.assertNull(c.getValue());
     }
 }

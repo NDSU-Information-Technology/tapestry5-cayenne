@@ -1,7 +1,11 @@
 package com.googlecode.tapestry5cayenne.services;
 
 import org.apache.tapestry5.model.MutableComponentModel;
-import org.apache.tapestry5.services.*;
+import org.apache.tapestry5.services.ClassTransformation;
+import org.apache.tapestry5.services.ComponentClassTransformWorker;
+import org.apache.tapestry5.services.ComponentMethodAdvice;
+import org.apache.tapestry5.services.ComponentMethodInvocation;
+import org.apache.tapestry5.services.TransformMethod;
 
 import com.googlecode.tapestry5cayenne.annotations.CommitAfter;
 
