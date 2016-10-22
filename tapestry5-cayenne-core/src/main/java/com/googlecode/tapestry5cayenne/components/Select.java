@@ -1,3 +1,15 @@
+/*  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package com.googlecode.tapestry5cayenne.components;
 
 import com.googlecode.tapestry5cayenne.PersistentEntitySelectModel;
@@ -12,65 +24,54 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 /**
- * Displays a selection list for Cayenne persistent objects.  Designed to
- * be used inside of custom forms.
+ * Displays a selection list for Cayenne persistent objects. Designed to be used
+ * inside of custom forms.
  *
  * @author Kevin Menard
  */
-public class Select implements Field
-{
-    @Inject
-    @Property
-    private ComponentResources resources;
+public class Select implements Field {
+  @Inject
+  @Property
+  private ComponentResources resources;
 
-    @Inject
-    private PersistentManager manager;
+  @Inject
+  private PersistentManager manager;
 
-    @Parameter
-    private Persistent value;
+  @Parameter
+  private Persistent value;
 
-    @Parameter
-    private String label;
+  @Parameter
+  private String label;
 
-    @Parameter
-    private boolean disabled;
+  @Parameter
+  private boolean disabled;
 
-    @Component(
-            inheritInformalParameters = true,
-            parameters = {
-                    "value=inherit:value",
-                    "label=inherit:label",
-                    "disabled=inherit:disabled",
-                    "model=model"
-            },
-            publishParameters = "blankLabel,blankOption,encoder,validate,zone"
-    )
-    private org.apache.tapestry5.corelib.components.Select select;
+  @Component(inheritInformalParameters = true, parameters = { "value=inherit:value", "label=inherit:label",
+      "disabled=inherit:disabled", "model=model" }, publishParameters = "blankLabel,blankOption,encoder,validate,zone")
+  private org.apache.tapestry5.corelib.components.Select select;
 
-    @SuppressWarnings("unchecked")
-    public SelectModel getModel()
-    {
-        return new PersistentEntitySelectModel(resources.getBoundType("value"), manager);
-    }
+  @SuppressWarnings("unchecked")
+  public SelectModel getModel() {
+    return new PersistentEntitySelectModel(resources.getBoundType("value"), manager);
+  }
 
+  public String getControlName() {
+    return select.getControlName();
+  }
 
-    public String getControlName() {
-        return select.getControlName();
-    }
+  public String getLabel() {
+    return label;
+  }
 
-    public String getLabel() {
-        return label;
-    }
+  public boolean isDisabled() {
+    return disabled;
+  }
 
-    public boolean isDisabled() {
-        return disabled;
-    }
+  public boolean isRequired() {
+    return select.isRequired();
+  }
 
-    public boolean isRequired() {
-        return select.isRequired();
-    }
-
-    public String getClientId() {
-        return select.getClientId();
-    }
+  public String getClientId() {
+    return select.getClientId();
+  }
 }
