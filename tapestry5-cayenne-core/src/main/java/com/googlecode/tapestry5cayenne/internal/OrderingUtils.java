@@ -30,7 +30,7 @@ public class OrderingUtils {
    * Converts the provided property names to orderings, assuming an ordering of
    * ascending for all properties.
    * 
-   * @param vals
+   * @param vals values to order
    * @return an array of Ordering objects.
    */
   public static Ordering[] stringToOrdering(String... vals) {
@@ -41,9 +41,9 @@ public class OrderingUtils {
    * Converts the provided property names to orderings. All orderings will be
    * ascending or descending, according to the ascending parameter.
    * 
-   * @param ascending
-   * @param vals
-   * @return
+   * @param ascending if ascending
+   * @param vals values
+   * @return orderings
    */
   public static Ordering[] stringToOrdering(boolean ascending, String... vals) {
     Ordering[] o = new Ordering[vals.length];

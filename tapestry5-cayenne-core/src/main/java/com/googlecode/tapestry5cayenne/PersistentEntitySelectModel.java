@@ -54,6 +54,9 @@ public class PersistentEntitySelectModel<T> extends AbstractSelectModel {
   /**
    * Constructs the model by looking up the entities corresponding to type,
    * using the provided ObjectContext. All provided orderings will be honored.
+   * @param type type
+   * @param manager manager
+   * @param orderings orderings
    */
   public PersistentEntitySelectModel(Class<T> type, PersistentManager manager, Ordering... orderings) {
     this(type, manager.listAll(type, orderings));

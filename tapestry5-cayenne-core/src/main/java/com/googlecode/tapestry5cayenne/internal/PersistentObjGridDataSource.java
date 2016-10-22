@@ -31,7 +31,7 @@ import com.googlecode.tapestry5cayenne.annotations.Label;
 
 /**
  * Provides a memory-efficient implementation of GridDataSource based on
- * fetching object entities. The coercion from ObjEntity => GridDataSource makes
+ * fetching object entities. The coercion from ObjEntity =&gt; GridDataSource makes
  * use of this class.
  */
 public class PersistentObjGridDataSource implements GridDataSource {

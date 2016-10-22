@@ -106,13 +106,15 @@ public class TapestryCayenneCoreModule {
    * Factory defaults for: FILTER_LOCATION - after all other request filters
    * UNPERSISTED_OBJECT_LIMIT - 500 T5CAYENNE_VERSION - current version of the
    * integration module.
+   * 
+   * @param configuration configuration
    */
-  public static void contributeFactoryDefaults(MappedConfiguration<String, String> conf) {
-    conf.add(FILTER_LOCATION, "after:*");
-    conf.add(UNPERSISTED_OBJECT_LIMIT, "500");
-    conf.add(T5CAYENNE_VERSION, VersionUtils
+  public static void contributeFactoryDefaults(MappedConfiguration<String, String> configuration) {
+    configuration.add(FILTER_LOCATION, "after:*");
+    configuration.add(UNPERSISTED_OBJECT_LIMIT, "500");
+    configuration.add(T5CAYENNE_VERSION, VersionUtils
         .readVersionNumber("META-INF/maven/com.googlecode.tapestry5-cayenne/tapestry5-cayenne-core/pom.properties"));
-    conf.add(T5CayenneConstants.PROJECT_FILE, "cayenne.xml");
+    configuration.add(T5CayenneConstants.PROJECT_FILE, "cayenne.xml");
   }
 
   @SuppressWarnings("unchecked")
@@ -140,17 +142,17 @@ public class TapestryCayenneCoreModule {
    * Contribute our ObjectContextInjectionProvider to the "master"
    * InjectionProvider.
    * 
-   * @param conf
-   * @param locator
+   * @param configuration configuration
+   * @param locator locator
    */
-  public static void contributeInjectionProvider(OrderedConfiguration<InjectionProvider> conf, ObjectLocator locator) {
-    conf.add("ObjectContext", locator.autobuild(ObjectContextInjectionProvider.class), "before:Service");
+  public static void contributeInjectionProvider(OrderedConfiguration<InjectionProvider> configuration, ObjectLocator locator) {
+    configuration.add("ObjectContext", locator.autobuild(ObjectContextInjectionProvider.class), "before:Service");
   }
 
   /**
    * add the library mapping for t5cayenne. Prefix is "cay".
    * 
-   * @param configuration
+   * @param configuration configuration
    */
   public static void contributeComponentClassResolver(Configuration<LibraryMapping> configuration) {
     configuration.add(new LibraryMapping("cay", "com.googlecode.tapestry5cayenne"));
@@ -158,6 +160,12 @@ public class TapestryCayenneCoreModule {
 
   /**
    * contribute the t5cayenne "Persistent" object value encoder.
+   * @param configuration configuration
+   * @param provider context provider
+   * @param coercer type coercer
+   * @param manager persistence manager
+   * @param storer storer
+   * @param enc value encrypter
    */
   @SuppressWarnings("unchecked")
   public static void contributeValueEncoderSource(MappedConfiguration<Class, ValueEncoderFactory> configuration,
@@ -183,27 +191,25 @@ public class TapestryCayenneCoreModule {
    * contribute the t5cayenne-specific DataTypeAnalyzer which handles, eg,
    * identifying relationships, among other things.
    * 
-   * @param conf
-   * @param analyzer
+   * @param configuration configuration
+   * @param analyzer analyzer
    */
-  public static void contributeDataTypeAnalyzer(OrderedConfiguration<DataTypeAnalyzer> conf,
-      @Cayenne DataTypeAnalyzer analyzer) {
+  public static void contributeDataTypeAnalyzer(OrderedConfiguration<DataTypeAnalyzer> configuration, @Cayenne DataTypeAnalyzer analyzer) {
     // add after Annotation; we want to make sure that explicitly-defined data
-    // types
-    // are honored.
-    conf.add("Cayenne", analyzer, "after:Annotation");
+    // types are honored.
+    configuration.add("Cayenne", analyzer, "after:Annotation");
   }
 
   /**
    * Contribute our view and edit blocks for to_one and to_many.
    * 
-   * @param conf
+   * @param configuration configuration
    */
-  public static void contributeBeanBlockSource(Configuration<BeanBlockContribution> conf) {
-    conf.add(new EditBlockContribution("to_one", "cay/CayenneEditBlockContributions", "to_one_editor"));
-    conf.add(new DisplayBlockContribution("to_one", "cay/CayenneViewBlockContributions", "to_one_viewer"));
-    conf.add(new DisplayBlockContribution("to_many_map", "cay/CayenneViewBlockContributions", "to_many_map_viewer"));
-    conf.add(new DisplayBlockContribution("to_many_collection", "cay/CayenneViewBlockContributions",
+  public static void contributeBeanBlockSource(Configuration<BeanBlockContribution> configuration) {
+    configuration.add(new EditBlockContribution("to_one", "cay/CayenneEditBlockContributions", "to_one_editor"));
+    configuration.add(new DisplayBlockContribution("to_one", "cay/CayenneViewBlockContributions", "to_one_viewer"));
+    configuration.add(new DisplayBlockContribution("to_many_map", "cay/CayenneViewBlockContributions", "to_many_map_viewer"));
+    configuration.add(new DisplayBlockContribution("to_many_collection", "cay/CayenneViewBlockContributions",
         "to_many_collection_viewer"));
   }
 
@@ -214,27 +220,28 @@ public class TapestryCayenneCoreModule {
    * <dd>Stores the id of the entity and reloads from the
    * {@link ObjectContext}</dd>
    * </dl>
+   * @param configuration configuration
+   * @param locator locator
    */
-  public static void contributePersistentFieldManager(
-      MappedConfiguration<String, PersistentFieldStrategy> configuration, ObjectLocator locator) {
+  public static void contributePersistentFieldManager(MappedConfiguration<String, PersistentFieldStrategy> configuration, ObjectLocator locator) {
     configuration.add("cayenneentity", locator.autobuild(CayenneEntityPersistentFieldStrategy.class));
   }
 
   /**
-   * Contribute query -> list (consequently: query -> GridDataSource) coercion
-   * and ObjEntity -> GridDataSource contributions.
+   * Contribute query -&amp; list (consequently: query -&amp; GridDataSource) coercion
+   * and ObjEntity -&amp; GridDataSource contributions.
    * 
-   * @param conf
+   * @param configuration configuration
    */
   @SuppressWarnings("unchecked")
-  public static void contributeTypeCoercer(Configuration<CoercionTuple> conf) {
-    conf.add(new CoercionTuple<String, Expression>(String.class, Expression.class, new Coercion<String, Expression>() {
+  public static void contributeTypeCoercer(Configuration<CoercionTuple> configuration) {
+    configuration.add(new CoercionTuple<String, Expression>(String.class, Expression.class, new Coercion<String, Expression>() {
       public Expression coerce(String input) {
         return Expression.fromString(input);
       }
     }));
 
-    conf.add(new CoercionTuple<Query, List>(Query.class, List.class, new Coercion<Query, List>() {
+    configuration.add(new CoercionTuple<Query, List>(Query.class, List.class, new Coercion<Query, List>() {
       public List coerce(Query input) {
         /*
          * as much as I would like to use ObjectContextProvider here, injecting
@@ -250,7 +257,7 @@ public class TapestryCayenneCoreModule {
 
     }));
 
-    conf.add(new CoercionTuple<ObjEntity, GridDataSource>(ObjEntity.class, GridDataSource.class,
+    configuration.add(new CoercionTuple<ObjEntity, GridDataSource>(ObjEntity.class, GridDataSource.class,
         new Coercion<ObjEntity, GridDataSource>() {
 
           public GridDataSource coerce(ObjEntity input) {
@@ -259,7 +266,7 @@ public class TapestryCayenneCoreModule {
 
         }));
 
-    conf.add(new CoercionTuple<Class, ObjEntity>(Class.class, ObjEntity.class, new Coercion<Class, ObjEntity>() {
+    configuration.add(new CoercionTuple<Class, ObjEntity>(Class.class, ObjEntity.class, new Coercion<Class, ObjEntity>() {
       public ObjEntity coerce(Class input) {
         return BaseContext.getThreadObjectContext().getEntityResolver().lookupObjEntity(input);
       }
@@ -270,9 +277,10 @@ public class TapestryCayenneCoreModule {
   /**
    * Add the t5cayenne request filter.
    * 
-   * @param configuration
-   * @param filter
-   * @param location
+   * @param configuration configuration
+   * @param filter request filter
+   * @param location filter location
+   * 
    */
   public static void contributeRequestHandler(OrderedConfiguration<RequestFilter> configuration,
       @Cayenne RequestFilter filter, @Symbol(TapestryCayenneCoreModule.FILTER_LOCATION) String location) {
@@ -282,9 +290,9 @@ public class TapestryCayenneCoreModule {
   /**
    * Contribute the "ejbq" and "ent" bindings
    * 
-   * @param configuration
-   * @param ejbqlBindingFactory
-   * @param locator
+   * @param configuration configuration
+   * @param ejbqlBindingFactory binding factory
+   * @param locator locator
    */
   public static void contributeBindingSource(MappedConfiguration<String, BindingFactory> configuration,
       @Local BindingFactory ejbqlBindingFactory, ObjectLocator locator) {
@@ -295,8 +303,8 @@ public class TapestryCayenneCoreModule {
   /**
    * Contribute the "CommitAfter" worker.
    * 
-   * @param configuration
-   * @param locator
+   * @param configuration configuration
+   * @param locator locator
    */
   public static void contributeComponentClassTransformWorker(
       OrderedConfiguration<ComponentClassTransformWorker> configuration, ObjectLocator locator) {
@@ -308,11 +316,11 @@ public class TapestryCayenneCoreModule {
    * Add the cayenne constraint generator, which enables auto-detection of
    * required properties, etc. based on the mapping information.
    * 
-   * @param conf
-   * @param locator
+   * @param configuration configuration
+   * @param locator locator
    */
-  public static void contributeValidationConstraintGenerator(OrderedConfiguration<ValidationConstraintGenerator> conf,
+  public static void contributeValidationConstraintGenerator(OrderedConfiguration<ValidationConstraintGenerator> configuration,
       ObjectLocator locator) {
-    conf.add("Cayenne", locator.autobuild(CayenneConstraintGenerator.class), "after:ValidateAnnotation");
+    configuration.add("Cayenne", locator.autobuild(CayenneConstraintGenerator.class), "after:ValidateAnnotation");
   }
 }

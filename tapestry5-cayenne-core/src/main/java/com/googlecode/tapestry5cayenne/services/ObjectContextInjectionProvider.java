@@ -44,9 +44,9 @@ public class ObjectContextInjectionProvider implements InjectionProvider {
   private final PropertyShadowBuilder shadowBuilder;
 
   /**
-   * @param provider
-   *          the ObjectContextProvider which is ultimately used to grab the
-   *          appropriate context.
+   * @param provider the ObjectContextProvider which is ultimately used to grab the appropriate context.
+   * @param manager manager
+   * @param shadowBuilder shadow builder
    */
   // putting @Cayenne on the parameter is the difference between T5-ioc
   // dying a gruesome death (recursive dependencies), and starting happily.

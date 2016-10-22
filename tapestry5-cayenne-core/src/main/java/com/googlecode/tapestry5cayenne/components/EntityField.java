@@ -76,11 +76,11 @@ import com.googlecode.tapestry5cayenne.services.PersistentManager;
  * chance to select the appropriate item to use. If there is no handler, the
  * bound value will be set to the first item returned in the list. Handlers can
  * expect two parameters: first, the string entered by the user; second, the
- * list of values fetched from the database. <code>
+ * list of values fetched from the database. &lt;code&gt;
  * 
- * @OnEvent(EntityField.MULTIPLE_ENTITIES) Persistent
+ * \@OnEvent(EntityField.MULTIPLE_ENTITIES) Persistent
  *                                         onMultipleentitiesFromXYZ(String
- *                                         input, List<Persistent> values) {
+ *                                         input, List&lt;Persistent&gt; values) {
  *                                         correctIndex=0; //resolve the
  *                                         issue... ... return
  *                                         values.get(correctIndex); }

@@ -22,7 +22,7 @@ import java.lang.annotation.Target;
 /**
  * Marker annotation for use with Cayenne-related services, so you can, eg:
  * 
- * @Inject @Cayenne ValueEncoder<Persistent>;
+ * \@Inject \@Cayenne ValueEncoder&lt;Persistent&gt;;
  * @author Robert Zeigler
  */
 @Retention(RetentionPolicy.RUNTIME)

@@ -18,7 +18,7 @@ import org.apache.tapestry5.ioc.Location;
 
 /**
  * Component binding that represents an EJBQLQuery. eg:
- * <t:grid source="ejbq:select a from Artist a"/>
+ * &lt;t:grid source="ejbq:select a from Artist a"/&gt;
  * 
  * @author robertz
  *

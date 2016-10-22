@@ -37,7 +37,7 @@ public @interface DefaultOrder {
 
   /**
    * Allows more control over the ordering by specifying the sort direction
-   * (true => ascending; false => descending). This can either be a single
+   * (true =&gt; ascending; false =&gt; descending). This can either be a single
    * value, representing the sort order for every specified property, or it can
    * be an array of the same length as orderings. An array of any other length
    * will result in a runtime exception.

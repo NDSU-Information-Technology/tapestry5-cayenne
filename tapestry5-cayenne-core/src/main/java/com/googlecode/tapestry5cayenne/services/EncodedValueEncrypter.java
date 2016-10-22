@@ -25,7 +25,7 @@ public interface EncodedValueEncrypter {
   /**
    * Encrypts the value to be sent to the client.
    * 
-   * @param plainTextValue
+   * @param plainTextValue plain text value
    * @return the encrypted value
    */
   String encrypt(String plainTextValue);
@@ -33,7 +33,7 @@ public interface EncodedValueEncrypter {
   /**
    * Decrypts the value from the client.
    * 
-   * @param encryptedValue
+   * @param encryptedValue encrypted value
    * @return the decrypted string.
    */
   String decrypt(String encryptedValue);

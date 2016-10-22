@@ -23,7 +23,7 @@ import com.googlecode.tapestry5cayenne.internal.EJBQLBinding;
 
 /**
  * EJBQLQuery binding factor, so you can do things like:
- * <t:grid source="select a from Artist a order by a.lastName, a.firstName"/>
+ * &lt;t:grid source="select a from Artist a order by a.lastName, a.firstName"/&gt;
  * 
  * @author robertz
  *
