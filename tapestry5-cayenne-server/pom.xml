@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.googlecode.tapestry5-cayenne</groupId>
+    <groupId>edu.ndsu.eci.tapestry5-cayenne</groupId>
     <artifactId>tapestry5-cayenne-server</artifactId>
     <version>0.5.5-ECI-SNAPSHOT</version>
     <packaging>jar</packaging>
     <parent>
-        <groupId>com.googlecode.tapestry5-cayenne</groupId>
+        <groupId>edu.ndsu.eci.tapestry5-cayenne</groupId>
         <artifactId>tapestry5-cayenne-project</artifactId>
         <version>0.5.5-ECI-SNAPSHOT</version>
     </parent>
@@ -17,7 +17,7 @@
     <inceptionYear>2008</inceptionYear>
     <dependencies>
         <dependency>
-            <groupId>com.googlecode.tapestry5-cayenne</groupId>
+            <groupId>edu.ndsu.eci.tapestry5-cayenne</groupId>
             <artifactId>tapestry5-cayenne-core</artifactId>
         </dependency>
         <dependency>

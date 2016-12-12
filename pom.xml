@@ -1,17 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.googlecode.tapestry5-cayenne</groupId>
+  <groupId>edu.ndsu.eci.tapestry5-cayenne</groupId>
   <artifactId>tapestry5-cayenne-project</artifactId>
   <packaging>pom</packaging>
   <version>0.5.5-ECI-SNAPSHOT</version>
   <name>Tapestry5-Cayenne Integration</name>
   <description>Makes integration of Cayenne within Tapestry 5 as easy as possible.</description>
   <inceptionYear>2008</inceptionYear>
-  <url>http://code.google.com/p/tapestry5-cayenne/</url>
-  <issueManagement>
-    <system>Google Code</system>
-    <url>http://code.google.com/p/tapestry5-cayenne/issues/</url>
-  </issueManagement>
+  <url>https://github.com/NDSU-Information-Technology/tapestry5-cayenne</url>
   <licenses>
     <license>
       <name>Apache Software License 2.0</name>
@@ -20,7 +16,8 @@
     </license>
   </licenses>
   <scm>
-    <url>http://tapestry5-cayenne.googlecode.com/svn/trunk</url>
+    <url>https://github.com/NDSU-Information-Technology/tapestry5-cayenne</url>
+    <developerConnection>scm:git:https://github.com/NDSU-Information-Technology/tapestry5-cayenne</developerConnection>
   </scm>
   <developers>
     <developer>
@@ -44,12 +41,6 @@
     </developer>
   </developers>
 
-  <mailingLists>
-    <mailingList>
-      <name>Developer List</name>
-      <archive>http://groups.google.com/group/tapestry5-cayenne-development</archive>
-    </mailingList>
-  </mailingLists>
 
   <modules>
     <module>tapestry5-cayenne-core</module>
@@ -118,7 +109,7 @@
       <!-- Now, artifacts created by sub-modules. -->
 
       <dependency>
-        <groupId>com.googlecode.tapestry5-cayenne</groupId>
+        <groupId>edu.ndsu.eci.tapestry5-cayenne</groupId>
         <artifactId>tapestry5-cayenne-core</artifactId>
         <version>${project.version}</version>
       </dependency>
