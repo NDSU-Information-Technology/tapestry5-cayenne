@@ -63,8 +63,8 @@ public class ObjectContextInjectionProvider implements InjectionProvider2 {
         return false;
       }
     } catch (ClassNotFoundException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      // this is probably a primitive (boolean)
+      return false;
     }
 
     OCType t = field.getAnnotation(OCType.class);
