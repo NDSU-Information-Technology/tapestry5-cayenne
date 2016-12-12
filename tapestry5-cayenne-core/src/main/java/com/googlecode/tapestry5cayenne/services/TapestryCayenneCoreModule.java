@@ -39,16 +39,16 @@ import org.apache.tapestry5.ioc.services.TypeCoercer;
 import org.apache.tapestry5.services.BeanBlockContribution;
 import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.BindingFactory;
-import org.apache.tapestry5.services.ComponentClassTransformWorker;
 import org.apache.tapestry5.services.DataTypeAnalyzer;
 import org.apache.tapestry5.services.DisplayBlockContribution;
 import org.apache.tapestry5.services.EditBlockContribution;
-import org.apache.tapestry5.services.InjectionProvider;
 import org.apache.tapestry5.services.LibraryMapping;
 import org.apache.tapestry5.services.PersistentFieldStrategy;
 import org.apache.tapestry5.services.RequestFilter;
 import org.apache.tapestry5.services.ValidationConstraintGenerator;
 import org.apache.tapestry5.services.ValueEncoderFactory;
+import org.apache.tapestry5.services.transform.ComponentClassTransformWorker2;
+import org.apache.tapestry5.services.transform.InjectionProvider2;
 
 import com.googlecode.tapestry5cayenne.T5CayenneConstants;
 import com.googlecode.tapestry5cayenne.annotations.Cayenne;
@@ -145,7 +145,7 @@ public class TapestryCayenneCoreModule {
    * @param configuration configuration
    * @param locator locator
    */
-  public static void contributeInjectionProvider(OrderedConfiguration<InjectionProvider> configuration, ObjectLocator locator) {
+  public static void contributeInjectionProvider(OrderedConfiguration<InjectionProvider2> configuration, ObjectLocator locator) {
     configuration.add("ObjectContext", locator.autobuild(ObjectContextInjectionProvider.class), "before:Service");
   }
 
@@ -307,7 +307,7 @@ public class TapestryCayenneCoreModule {
    * @param locator locator
    */
   public static void contributeComponentClassTransformWorker(
-      OrderedConfiguration<ComponentClassTransformWorker> configuration, ObjectLocator locator) {
+      OrderedConfiguration<ComponentClassTransformWorker2> configuration, ObjectLocator locator) {
     // add as per the hibernate module: after logging.
     configuration.add("CayenneCommitAfter", locator.autobuild(CayenneCommitAfterWorker.class), "after:Log");
   }

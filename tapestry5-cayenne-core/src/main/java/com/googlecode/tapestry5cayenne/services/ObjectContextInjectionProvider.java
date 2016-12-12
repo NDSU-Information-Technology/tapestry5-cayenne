@@ -17,14 +17,14 @@ import org.apache.tapestry5.ioc.ObjectLocator;
 import org.apache.tapestry5.ioc.services.PerthreadManager;
 import org.apache.tapestry5.ioc.services.PropertyShadowBuilder;
 import org.apache.tapestry5.model.MutableComponentModel;
-import org.apache.tapestry5.services.ClassTransformation;
-import org.apache.tapestry5.services.InjectionProvider;
+import org.apache.tapestry5.plastic.PlasticField;
 
 import com.googlecode.tapestry5cayenne.ContextType;
 import com.googlecode.tapestry5cayenne.annotations.Cayenne;
 import com.googlecode.tapestry5cayenne.annotations.OCType;
 import com.googlecode.tapestry5cayenne.internal.ObjectContextWrapper;
-import org.apache.tapestry5.services.TransformField;
+
+import org.apache.tapestry5.services.transform.InjectionProvider2;
 
 /**
  * Provides an InjectionProvider so pages and components can @Inject an
@@ -37,7 +37,7 @@ import org.apache.tapestry5.services.TransformField;
  * @author robertz
  *
  */
-public class ObjectContextInjectionProvider implements InjectionProvider {
+public class ObjectContextInjectionProvider implements InjectionProvider2 {
 
   private final ObjectContextProvider provider;
   private final PerthreadManager threadManager;
@@ -57,12 +57,16 @@ public class ObjectContextInjectionProvider implements InjectionProvider {
     this.shadowBuilder = shadowBuilder;
   }
 
-  public boolean provideInjection(String fieldName, Class fieldType, ObjectLocator locator,
-      ClassTransformation transformation, MutableComponentModel componentModel) {
-    if (!(ObjectContext.class.isAssignableFrom(fieldType))) {
-      return false;
+  public boolean provideInjection(PlasticField field, ObjectLocator locator, MutableComponentModel componentModel) {
+    try {
+      if (!(ObjectContext.class.isAssignableFrom(Class.forName(field.getTypeName())))) {
+        return false;
+      }
+    } catch (ClassNotFoundException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
-    TransformField field = transformation.getField(fieldName);
+
     OCType t = field.getAnnotation(OCType.class);
     ContextType ctype = t == null ? ContextType.CURRENT : t.value();
     ObjectContext toInject;

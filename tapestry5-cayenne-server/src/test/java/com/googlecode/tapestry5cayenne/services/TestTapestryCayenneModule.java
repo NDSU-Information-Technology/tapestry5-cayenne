@@ -14,13 +14,14 @@
 package com.googlecode.tapestry5cayenne.services;
 
 import junit.framework.Assert;
+
 import org.apache.cayenne.access.DataContext;
 import org.apache.tapestry5.ValueEncoder;
 import org.apache.tapestry5.ioc.AnnotationProvider;
 import org.apache.tapestry5.ioc.Registry;
 import org.apache.tapestry5.ioc.RegistryBuilder;
+import org.apache.tapestry5.modules.TapestryModule;
 import org.apache.tapestry5.services.RequestFilter;
-import org.apache.tapestry5.services.TapestryModule;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;

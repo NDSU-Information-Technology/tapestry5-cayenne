@@ -13,11 +13,12 @@
 package com.googlecode.tapestry5cayenne.services;
 
 import org.apache.tapestry5.model.MutableComponentModel;
-import org.apache.tapestry5.services.ClassTransformation;
-import org.apache.tapestry5.services.ComponentClassTransformWorker;
-import org.apache.tapestry5.services.ComponentMethodAdvice;
-import org.apache.tapestry5.services.ComponentMethodInvocation;
-import org.apache.tapestry5.services.TransformMethod;
+import org.apache.tapestry5.plastic.MethodAdvice;
+import org.apache.tapestry5.plastic.MethodInvocation;
+import org.apache.tapestry5.plastic.PlasticClass;
+import org.apache.tapestry5.plastic.PlasticMethod;
+import org.apache.tapestry5.services.transform.ComponentClassTransformWorker2;
+import org.apache.tapestry5.services.transform.TransformationSupport;
 
 import com.googlecode.tapestry5cayenne.annotations.CommitAfter;
 
@@ -27,13 +28,13 @@ import com.googlecode.tapestry5cayenne.annotations.CommitAfter;
  * page, mixin) will automatically call context.commitChanges() on completion of
  * the method; should commit fail, rollback is performed automatically.
  */
-public class CayenneCommitAfterWorker implements ComponentClassTransformWorker {
+public class CayenneCommitAfterWorker implements ComponentClassTransformWorker2 {
 
   private final ObjectContextProvider provider;
 
-  private final ComponentMethodAdvice advice = new ComponentMethodAdvice() {
+  private final MethodAdvice advice = new MethodAdvice() {
 
-    public void advise(ComponentMethodInvocation invocation) {
+    public void advise(MethodInvocation invocation) {
 
       try {
         invocation.proceed();
@@ -49,8 +50,8 @@ public class CayenneCommitAfterWorker implements ComponentClassTransformWorker {
 
   };
 
-  public void transform(ClassTransformation transformation, MutableComponentModel model) {
-    for (TransformMethod method : transformation.matchMethodsWithAnnotation(CommitAfter.class)) {
+  public void transform(PlasticClass plasticClass, TransformationSupport support, MutableComponentModel model) {
+    for (final PlasticMethod method : plasticClass.getMethodsWithAnnotation(CommitAfter.class)) {
       method.addAdvice(advice);
     }
   }
