@@ -12,7 +12,11 @@
  */
 package com.googlecode.tapestry5cayenne.services;
 
+import java.util.Collection;
+
 import org.apache.cayenne.map.ObjEntity;
+import org.apache.cayenne.util.CayenneMapEntry;
+import org.apache.cayenne.util.NameConverter;
 import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.InjectService;
@@ -39,7 +43,7 @@ public class CayenneBeanModelSource implements BeanModelSource {
   private final ObjectContextProvider _provider;
   private final Environment _environment;
 
-  private static final String[] defaultExcludes = new String[] { "persistenceState", "snapshotVersion", };
+  private static final String[] defaultExcludes = new String[] { "persistenceState", "snapshotVersion", "DEFAULT_VERSION" };
 
   public CayenneBeanModelSource(@InjectService("BeanModelSource") final BeanModelSource source,
       final ObjectContextProvider provider, final Environment environment) {
@@ -68,8 +72,21 @@ public class CayenneBeanModelSource implements BeanModelSource {
     if (ent == null) {
       return model;
     }
-
-    return model.exclude(defaultExcludes);
+    
+    model = model.exclude(defaultExcludes);
+    //make sure to exclude all public static XYZ_PROPERTY values. We can figure out what to exclude by checking the list of properties/relationships...
+    //since Tapestry 5.3...
+    model = excludeProps(model,ent.getAttributes(), "_PROPERTY");
+    model = excludeProps(model, ent.getRelationships(), "_PROPERTY");
+    return excludeProps(model, ent.getPrimaryKeys(), "_PK_COLUMN");
+   
   }
 
+  private <T> BeanModel<T> excludeProps(BeanModel<T> model, Collection<? extends CayenneMapEntry> entries, String suffix) {
+    for (CayenneMapEntry entry : entries) {
+        model = model.exclude(NameConverter.javaToUnderscored(entry.getName()) + suffix);
+    }
+    return model;
+  }
+  
 }

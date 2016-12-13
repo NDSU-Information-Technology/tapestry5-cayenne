@@ -113,7 +113,7 @@ public class TapestryCayenneCoreModule {
     configuration.add(FILTER_LOCATION, "after:*");
     configuration.add(UNPERSISTED_OBJECT_LIMIT, "500");
     configuration.add(T5CAYENNE_VERSION, VersionUtils
-        .readVersionNumber("META-INF/maven/com.googlecode.tapestry5-cayenne/tapestry5-cayenne-core/pom.properties"));
+        .readVersionNumber("META-INF/maven/edu.ndsu.eci.tapestry5-cayenne/tapestry5-cayenne-core/pom.properties"));
     configuration.add(T5CayenneConstants.PROJECT_FILE, "cayenne.xml");
   }
 
@@ -228,8 +228,8 @@ public class TapestryCayenneCoreModule {
   }
 
   /**
-   * Contribute query -&amp; list (consequently: query -&amp; GridDataSource) coercion
-   * and ObjEntity -&amp; GridDataSource contributions.
+   * Contribute query -&gt; list (consequently: query -&gt; GridDataSource) coercion
+   * and ObjEntity -&gt; GridDataSource contributions.
    * 
    * @param configuration configuration
    */
