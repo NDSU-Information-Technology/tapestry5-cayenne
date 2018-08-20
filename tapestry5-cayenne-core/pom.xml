@@ -3,12 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.ndsu.eci.tapestry5-cayenne</groupId>
     <artifactId>tapestry5-cayenne-core</artifactId>
-    <version>0.6.0.1-SNAPSHOT</version>
+    <version>0.6.0.2</version>
     <packaging>jar</packaging>
     <parent>
         <groupId>edu.ndsu.eci.tapestry5-cayenne</groupId>
         <artifactId>tapestry5-cayenne-project</artifactId>
-        <version>0.6.0.1-SNAPSHOT</version>
+        <version>0.6.0.2</version>
     </parent>
     <name>Tapestry5-Cayenne Core Library</name>
     <description>
