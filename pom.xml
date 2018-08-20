@@ -66,12 +66,6 @@
         <scope>provided</scope>
       </dependency>
       <dependency>
-        <groupId>org.apache.tapestry</groupId>
-        <artifactId>tapestry-test</artifactId>
-        <version>${tapestry-release-version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
         <groupId>org.apache.cayenne</groupId>
         <artifactId>cayenne-client</artifactId>
         <version>${cayenne-release-version}</version>
@@ -82,30 +76,6 @@
         <artifactId>cayenne-server</artifactId>
         <version>${cayenne-release-version}</version>
         <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.testng</groupId>
-        <artifactId>testng</artifactId>
-        <version>5.12.1</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.easymock</groupId>
-        <artifactId>easymock</artifactId>
-        <version>2.2</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>hsqldb</groupId>
-        <artifactId>hsqldb</artifactId>
-        <version>1.8.0.7</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.easymock</groupId>
-        <artifactId>easymock</artifactId>
-        <version>2.3</version>
-        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>javax.servlet</groupId>
@@ -174,7 +144,10 @@
             </archive>
           </configuration>
         </plugin>
-        <plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-gpg-plugin</artifactId>
         <executions>
@@ -187,8 +160,7 @@
           </execution>
         </executions>
       </plugin>
-      </plugins>
-    </pluginManagement>
+    </plugins>
   </build>
 
   <reporting>
