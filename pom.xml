@@ -17,7 +17,8 @@
   </licenses>
   <scm>
     <url>https://github.com/NDSU-Information-Technology/tapestry5-cayenne</url>
-    <developerConnection>scm:git:https://github.com/NDSU-Information-Technology/tapestry5-cayenne</developerConnection>
+    <developerConnection>scm:git:https://github.com/NDSU-Information-Technology/tapestry5-cayenne.git</developerConnection>
+    <connection>scm:git:https://github.com/NDSU-Information-Technology/tapestry5-cayenne.git</connection>
   </scm>
   <developers>
     <developer>
@@ -39,8 +40,15 @@
       </roles>
       <timezone>-6</timezone>
     </developer>
+    <developer>
+      <id>rfrovarp</id>
+      <name>Richard Frovarp</name>
+      <email>richard.frovarp@ndsu.edu</email>
+      <organization>North Dakota State University - ECI</organization>
+      <organizationUrl>https://www.ndsu.edu/eci</organizationUrl>
+    </developer>
   </developers>
-
+  
 
   <modules>
     <module>tapestry5-cayenne-core</module>
@@ -166,6 +174,19 @@
             </archive>
           </configuration>
         </plugin>
+        <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
       </plugins>
     </pluginManagement>
   </build>
@@ -215,35 +236,26 @@
 
   <properties>
     <cayenne-release-version>3.0.2</cayenne-release-version>
-    <tapestry-release-version>5.4.1</tapestry-release-version>
+    <tapestry-release-version>5.4.3</tapestry-release-version>
   </properties>
 
-  <repositories>
-    <!-- Cayenne repositories. -->
-<!--    <repository>
-      <snapshots />
-      <id>apache.snapshots</id>
-      <url>http://people.apache.org/repo/m2-snapshot-repository</url>
-    </repository>
-    <repository>
-      <id>cayenne.deps</id>
-      <url>http://objectstyle.org/maven2</url>
-    </repository> -->
-    <!-- saiwai repo 
-    <repository>
-      <id>saiwai-repository</id>
-      <url>http://maven.saiwai-solutions.com/</url>
-    </repository> -->
-    <!-- tapestry snapshot repository 
-    <repository>
-      <id>tapestry-snapshots</id>
-      <url>http://tapestry.formos.com/maven-snapshot-repository/</url>
-    </repository> -->
-    <!-- tapestry (pre) release repository 
-    <repository>
-      <id>tapestry-pending-releases</id>
-      <url>http://people.apache.org/~hlship/tapestry-ibiblio-rsynch-repository/</url>
-    </repository> -->
-  </repositories>
 
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/NDSU-Information-Technology/tapestry5-cayenne</url>
+  </issueManagement>
+  
+  <distributionManagement>
+  <!-- Repository for snapshots -->
+  <snapshotRepository>
+      <id>sonatype-nexus-snapshots</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+  </snapshotRepository>
+  <!-- Repository for releases -->
+  <repository>
+      <id>nexus-releases</id>
+      <name>Nexus Release Repository</name>
+      <url>http://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+  </repository>
+</distributionManagement>
 </project>
