@@ -13,8 +13,8 @@
 package com.googlecode.tapestry5cayenne.internal;
 
 import org.apache.cayenne.query.EJBQLQuery;
+import org.apache.tapestry5.commons.Location;
 import org.apache.tapestry5.internal.bindings.AbstractBinding;
-import org.apache.tapestry5.ioc.Location;
 
 /**
  * Component binding that represents an EJBQLQuery. eg:

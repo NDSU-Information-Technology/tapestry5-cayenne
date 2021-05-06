@@ -13,8 +13,8 @@
 package com.googlecode.tapestry5cayenne.integration.app0.pages;
 
 import org.apache.cayenne.ObjectContext;
+import org.apache.tapestry5.http.services.Request;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
 
 import com.googlecode.tapestry5cayenne.ContextType;
 import com.googlecode.tapestry5cayenne.annotations.OCType;

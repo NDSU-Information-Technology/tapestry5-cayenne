@@ -24,8 +24,8 @@ import org.apache.cayenne.ObjectId;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.map.ObjEntity;
 import org.apache.tapestry5.ValueEncoder;
+import org.apache.tapestry5.commons.services.TypeCoercer;
 import org.apache.tapestry5.ioc.annotations.Marker;
-import org.apache.tapestry5.ioc.services.TypeCoercer;
 
 import com.googlecode.tapestry5cayenne.annotations.Cayenne;
 

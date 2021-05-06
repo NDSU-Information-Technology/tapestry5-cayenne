@@ -18,10 +18,10 @@ import java.util.Collection;
 import org.apache.cayenne.Persistent;
 import org.apache.tapestry5.ValueEncoder;
 import org.apache.tapestry5.annotations.Persist;
+import org.apache.tapestry5.http.services.Request;
 import org.apache.tapestry5.internal.services.AbstractSessionPersistentFieldStrategy;
 import org.apache.tapestry5.services.PersistentFieldChange;
 import org.apache.tapestry5.services.PersistentFieldStrategy;
-import org.apache.tapestry5.services.Request;
 
 import com.googlecode.tapestry5cayenne.annotations.Cayenne;
 

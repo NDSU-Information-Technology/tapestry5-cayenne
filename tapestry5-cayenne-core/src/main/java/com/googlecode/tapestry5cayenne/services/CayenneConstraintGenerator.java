@@ -21,7 +21,7 @@ import org.apache.cayenne.map.EntityResolver;
 import org.apache.cayenne.map.ObjAttribute;
 import org.apache.cayenne.map.ObjEntity;
 import org.apache.cayenne.map.ObjRelationship;
-import org.apache.tapestry5.ioc.AnnotationProvider;
+import org.apache.tapestry5.commons.AnnotationProvider;
 import org.apache.tapestry5.services.BeanEditContext;
 import org.apache.tapestry5.services.Environment;
 import org.apache.tapestry5.services.PropertyEditContext;

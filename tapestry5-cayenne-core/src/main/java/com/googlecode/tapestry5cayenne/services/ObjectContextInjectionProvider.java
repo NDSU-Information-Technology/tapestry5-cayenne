@@ -13,7 +13,7 @@
 package com.googlecode.tapestry5cayenne.services;
 
 import org.apache.cayenne.ObjectContext;
-import org.apache.tapestry5.ioc.ObjectLocator;
+import org.apache.tapestry5.commons.ObjectLocator;
 import org.apache.tapestry5.ioc.services.PerthreadManager;
 import org.apache.tapestry5.ioc.services.PropertyShadowBuilder;
 import org.apache.tapestry5.model.MutableComponentModel;

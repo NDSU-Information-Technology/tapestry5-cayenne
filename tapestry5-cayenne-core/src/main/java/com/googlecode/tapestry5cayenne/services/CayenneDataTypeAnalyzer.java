@@ -22,10 +22,10 @@ import org.apache.cayenne.map.ObjAttribute;
 import org.apache.cayenne.map.ObjEntity;
 import org.apache.cayenne.map.ObjRelationship;
 import org.apache.tapestry5.beaneditor.DataType;
+import org.apache.tapestry5.commons.services.DataTypeAnalyzer;
+import org.apache.tapestry5.commons.services.PropertyAdapter;
 import org.apache.tapestry5.ioc.annotations.InjectService;
 import org.apache.tapestry5.ioc.annotations.Marker;
-import org.apache.tapestry5.ioc.services.PropertyAdapter;
-import org.apache.tapestry5.services.DataTypeAnalyzer;
 import org.apache.tapestry5.services.Environment;
 
 import com.googlecode.tapestry5cayenne.annotations.Cayenne;

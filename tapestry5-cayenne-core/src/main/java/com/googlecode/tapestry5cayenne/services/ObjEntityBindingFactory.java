@@ -15,7 +15,7 @@ package com.googlecode.tapestry5cayenne.services;
 import org.apache.cayenne.map.ObjEntity;
 import org.apache.tapestry5.Binding;
 import org.apache.tapestry5.ComponentResources;
-import org.apache.tapestry5.ioc.Location;
+import org.apache.tapestry5.commons.Location;
 import org.apache.tapestry5.services.BindingFactory;
 
 import com.googlecode.tapestry5cayenne.internal.ObjEntityBinding;

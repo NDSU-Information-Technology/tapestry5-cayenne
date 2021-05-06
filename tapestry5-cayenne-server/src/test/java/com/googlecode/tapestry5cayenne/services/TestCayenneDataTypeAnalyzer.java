@@ -16,9 +16,9 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 
 import org.apache.tapestry5.beaneditor.DataType;
+import org.apache.tapestry5.commons.services.DataTypeAnalyzer;
+import org.apache.tapestry5.commons.services.PropertyAdapter;
 import org.apache.tapestry5.ioc.Registry;
-import org.apache.tapestry5.ioc.services.PropertyAdapter;
-import org.apache.tapestry5.services.DataTypeAnalyzer;
 import org.apache.tapestry5.services.Environment;
 import org.easymock.EasyMock;
 import org.testng.Assert;

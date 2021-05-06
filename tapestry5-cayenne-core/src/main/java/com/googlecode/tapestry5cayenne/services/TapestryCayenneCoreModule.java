@@ -22,29 +22,29 @@ import org.apache.cayenne.map.ObjEntity;
 import org.apache.cayenne.query.Query;
 import org.apache.tapestry5.ValueEncoder;
 import org.apache.tapestry5.VersionUtils;
+import org.apache.tapestry5.beanmodel.services.BeanModelSource;
+import org.apache.tapestry5.commons.Configuration;
+import org.apache.tapestry5.commons.MappedConfiguration;
+import org.apache.tapestry5.commons.ObjectLocator;
+import org.apache.tapestry5.commons.OrderedConfiguration;
+import org.apache.tapestry5.commons.services.Coercion;
+import org.apache.tapestry5.commons.services.CoercionTuple;
+import org.apache.tapestry5.commons.services.DataTypeAnalyzer;
+import org.apache.tapestry5.commons.services.TypeCoercer;
 import org.apache.tapestry5.grid.GridDataSource;
-import org.apache.tapestry5.ioc.Configuration;
-import org.apache.tapestry5.ioc.MappedConfiguration;
-import org.apache.tapestry5.ioc.ObjectLocator;
-import org.apache.tapestry5.ioc.OrderedConfiguration;
+import org.apache.tapestry5.http.services.RequestFilter;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.InjectService;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.Symbol;
-import org.apache.tapestry5.ioc.services.Coercion;
-import org.apache.tapestry5.ioc.services.CoercionTuple;
 import org.apache.tapestry5.ioc.services.ServiceOverride;
-import org.apache.tapestry5.ioc.services.TypeCoercer;
 import org.apache.tapestry5.services.BeanBlockContribution;
-import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.BindingFactory;
-import org.apache.tapestry5.services.DataTypeAnalyzer;
 import org.apache.tapestry5.services.DisplayBlockContribution;
 import org.apache.tapestry5.services.EditBlockContribution;
 import org.apache.tapestry5.services.LibraryMapping;
 import org.apache.tapestry5.services.PersistentFieldStrategy;
-import org.apache.tapestry5.services.RequestFilter;
 import org.apache.tapestry5.services.ValidationConstraintGenerator;
 import org.apache.tapestry5.services.ValueEncoderFactory;
 import org.apache.tapestry5.services.transform.ComponentClassTransformWorker2;
@@ -234,14 +234,17 @@ public class TapestryCayenneCoreModule {
    * @param configuration configuration
    */
   @SuppressWarnings("unchecked")
-  public static void contributeTypeCoercer(Configuration<CoercionTuple> configuration) {
-    configuration.add(new CoercionTuple<String, Expression>(String.class, Expression.class, new Coercion<String, Expression>() {
+  public static void contributeTypeCoercer(MappedConfiguration<CoercionTuple.Key, CoercionTuple> configuration) {
+    Coercion<String, Expression> string2ExpressionCoercion = new Coercion<String, Expression>() {
       public Expression coerce(String input) {
         return Expression.fromString(input);
       }
-    }));
-
-    configuration.add(new CoercionTuple<Query, List>(Query.class, List.class, new Coercion<Query, List>() {
+    };
+    
+    CoercionTuple<String, Expression> expressionTuple = new CoercionTuple<String, Expression>(String.class, Expression.class, string2ExpressionCoercion);
+    configuration.add(expressionTuple.getKey(), expressionTuple);
+    
+    Coercion<Query, List> query2ListCoercion = new Coercion<Query, List>() {
       public List coerce(Query input) {
         /*
          * as much as I would like to use ObjectContextProvider here, injecting
@@ -254,24 +257,28 @@ public class TapestryCayenneCoreModule {
         }
         return oc.performQuery(input);
       }
+    };
+    
+    CoercionTuple<Query, List> queryTuple = new CoercionTuple<Query, List>(Query.class, List.class, query2ListCoercion);
+    configuration.add(queryTuple.getKey(), queryTuple);
+    
+    Coercion<ObjEntity, GridDataSource> obj2GdsCoercion = new Coercion<ObjEntity, GridDataSource>() {
+      public GridDataSource coerce(ObjEntity input) {
+        return new PersistentObjGridDataSource(input);
+      }
+    };
 
-    }));
-
-    configuration.add(new CoercionTuple<ObjEntity, GridDataSource>(ObjEntity.class, GridDataSource.class,
-        new Coercion<ObjEntity, GridDataSource>() {
-
-          public GridDataSource coerce(ObjEntity input) {
-            return new PersistentObjGridDataSource(input);
-          }
-
-        }));
-
-    configuration.add(new CoercionTuple<Class, ObjEntity>(Class.class, ObjEntity.class, new Coercion<Class, ObjEntity>() {
+    CoercionTuple<ObjEntity, GridDataSource> objTuple = new CoercionTuple<ObjEntity, GridDataSource>(ObjEntity.class, GridDataSource.class, obj2GdsCoercion);
+    configuration.add(objTuple.getKey(), objTuple);
+    
+    Coercion<Class, ObjEntity> class2ObjEntity = new Coercion<Class, ObjEntity>() {
       public ObjEntity coerce(Class input) {
         return BaseContext.getThreadObjectContext().getEntityResolver().lookupObjEntity(input);
       }
-    }));
-
+    };
+    
+    CoercionTuple<Class, ObjEntity> class2ObjEntityTuple = new CoercionTuple<Class, ObjEntity>(Class.class, ObjEntity.class, class2ObjEntity);
+    configuration.add(class2ObjEntityTuple.getKey(), class2ObjEntityTuple);
   }
 
   /**

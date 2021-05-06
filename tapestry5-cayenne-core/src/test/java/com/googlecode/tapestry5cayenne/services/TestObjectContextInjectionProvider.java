@@ -16,11 +16,11 @@ import java.lang.annotation.Annotation;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
+import org.apache.tapestry5.commons.services.DataTypeAnalyzer;
 import org.apache.tapestry5.ioc.services.PerThreadValue;
 import org.apache.tapestry5.ioc.services.PerthreadManager;
 import org.apache.tapestry5.ioc.services.PropertyShadowBuilder;
 import org.apache.tapestry5.services.ClassTransformation;
-import org.apache.tapestry5.services.DataTypeAnalyzer;
 import org.apache.tapestry5.services.TransformField;
 import org.easymock.EasyMock;
 import org.testng.Assert;

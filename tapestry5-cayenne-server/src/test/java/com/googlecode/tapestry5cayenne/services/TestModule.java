@@ -13,7 +13,7 @@
  */
 package com.googlecode.tapestry5cayenne.services;
 
-import org.apache.tapestry5.ioc.MappedConfiguration;
+import org.apache.tapestry5.commons.MappedConfiguration;
 
 import com.googlecode.tapestry5cayenne.model.Painting;
 

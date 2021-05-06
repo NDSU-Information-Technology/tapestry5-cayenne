@@ -13,8 +13,8 @@
 package com.googlecode.tapestry5cayenne.internal;
 
 import org.apache.cayenne.map.ObjEntity;
+import org.apache.tapestry5.commons.Location;
 import org.apache.tapestry5.internal.bindings.AbstractBinding;
-import org.apache.tapestry5.ioc.Location;
 
 /**
  * Binding for ObjEntity. Use as: ent:XXX where XXX is the entity name. For

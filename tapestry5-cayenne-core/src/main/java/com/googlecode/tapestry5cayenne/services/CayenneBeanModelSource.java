@@ -17,11 +17,11 @@ import java.util.Collection;
 import org.apache.cayenne.map.ObjEntity;
 import org.apache.cayenne.util.CayenneMapEntry;
 import org.apache.cayenne.util.NameConverter;
-import org.apache.tapestry5.beaneditor.BeanModel;
-import org.apache.tapestry5.ioc.Messages;
+import org.apache.tapestry5.beanmodel.BeanModel;
+import org.apache.tapestry5.beanmodel.services.BeanModelSource;
+import org.apache.tapestry5.commons.Messages;
 import org.apache.tapestry5.ioc.annotations.InjectService;
 import org.apache.tapestry5.ioc.annotations.Marker;
-import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.Environment;
 
 import com.googlecode.tapestry5cayenne.annotations.Cayenne;
