@@ -15,6 +15,7 @@ package com.googlecode.tapestry5cayenne.services;
 
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.BaseContext;
+import org.apache.cayenne.DataChannel;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.services.ApplicationStateManager;
@@ -36,7 +37,7 @@ public class DataContextProviderImpl implements ObjectContextProvider {
   public DataContextProviderImpl(final ApplicationStateManager asm, @Symbol(T5CayenneConstants.PROJECT_FILE) String projectFile) {
     this.asm = asm;
     try {
-      this.serverRuntime = new ServerRuntime(projectFile);
+      this.serverRuntime = ServerRuntime.builder().addConfig(projectFile).build();
     } catch (Exception e) {
       //cayenne 3.1M3 introduces multiple project files, and the default naming isn't cayenne.xml anymore.
       //so if there's an exception here, it's most likely a config file not found, or other exception.
@@ -62,7 +63,12 @@ public class DataContextProviderImpl implements ObjectContextProvider {
   }
 
   public ObjectContext newContext() {
-    return serverRuntime.getContext();
+    return serverRuntime.newContext();
+  }
+
+  @Override
+  public ObjectContext newChildContext(DataChannel parentChannel) {
+    return serverRuntime.newContext(parentChannel);
   }
 
 }

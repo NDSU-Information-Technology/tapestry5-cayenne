@@ -16,7 +16,7 @@ import java.util.Collection;
 
 import org.apache.cayenne.map.ObjEntity;
 import org.apache.cayenne.util.CayenneMapEntry;
-import org.apache.cayenne.util.NameConverter;
+import org.apache.cayenne.util.Util;
 import org.apache.tapestry5.beanmodel.BeanModel;
 import org.apache.tapestry5.beanmodel.services.BeanModelSource;
 import org.apache.tapestry5.commons.Messages;
@@ -67,7 +67,7 @@ public class CayenneBeanModelSource implements BeanModelSource {
         : _source.createDisplayModel(type, messages);
     _environment.pop(BeanModelTypeHolder.class);
     model.getBeanType();
-    ObjEntity ent = _provider.currentContext().getEntityResolver().lookupObjEntity(type);
+    ObjEntity ent = _provider.currentContext().getEntityResolver().getObjEntity(type);
 
     if (ent == null) {
       return model;
@@ -84,9 +84,43 @@ public class CayenneBeanModelSource implements BeanModelSource {
 
   private <T> BeanModel<T> excludeProps(BeanModel<T> model, Collection<? extends CayenneMapEntry> entries, String suffix) {
     for (CayenneMapEntry entry : entries) {
-        model = model.exclude(NameConverter.javaToUnderscored(entry.getName()) + suffix);
+        model = model.exclude(javaToUnderscored(entry.getName()) + suffix);
     }
     return model;
   }
+  
+  /**
+   * Converts a String name to a String forllowing java convention for the static final
+   * variables. E.g. "abcXyz" will be converted to "ABC_XYZ".
+   * 
+   * was removed from later version of Cayenne, so copied from previous version
+   */
+  public static String javaToUnderscored(String name) {
+    if (name == null) {
+        return null;
+    }
+
+    // clear of non-java chars. While the method name implies that a passed identifier
+    // is pure Java, it is used to build pk columns names and such, so extra safety
+    // check is a good idea
+    name = Util.specialCharsToJava(name);
+
+    char charArray[] = name.toCharArray();
+    StringBuilder buffer = new StringBuilder();
+
+    for (int i = 0; i < charArray.length; i++) {
+        if ((Character.isUpperCase(charArray[i])) && (i != 0)) {
+
+            char prevChar = charArray[i - 1];
+            if ((Character.isLowerCase(prevChar))) {
+                buffer.append("_");
+            }
+        }
+
+        buffer.append(Character.toUpperCase(charArray[i]));
+    }
+
+    return buffer.toString();
+}
   
 }

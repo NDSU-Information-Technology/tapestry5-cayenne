@@ -48,12 +48,12 @@ public class PersistentObjGridDataSource implements GridDataSource {
   }
 
   public PersistentObjGridDataSource(Class<?> type) {
-    this(context().getEntityResolver().lookupObjEntity(type));
+    this(context().getEntityResolver().getObjEntity(type));
   }
 
   protected Query initCountQuery(ObjEntity type) {
-    ObjEntity oent = context().getEntityResolver().lookupObjEntity(type);
-    String ejbql = String.format("select count(t0) from %s t0", oent.getName());
+//    ObjEntity oent = context().getEntityResolver().getObjEntity(type);
+    String ejbql = String.format("select count(t0) from %s t0", type.getName());
     return new EJBQLQuery(ejbql);
   }
 

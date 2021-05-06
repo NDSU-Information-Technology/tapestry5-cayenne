@@ -18,6 +18,7 @@ import org.apache.cayenne.BaseContext;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.map.ObjEntity;
 import org.apache.cayenne.query.Query;
 import org.apache.tapestry5.ValueEncoder;
@@ -237,7 +238,7 @@ public class TapestryCayenneCoreModule {
   public static void contributeTypeCoercer(MappedConfiguration<CoercionTuple.Key, CoercionTuple> configuration) {
     Coercion<String, Expression> string2ExpressionCoercion = new Coercion<String, Expression>() {
       public Expression coerce(String input) {
-        return Expression.fromString(input);
+        return ExpressionFactory.exp(input); 
       }
     };
     
@@ -273,7 +274,7 @@ public class TapestryCayenneCoreModule {
     
     Coercion<Class, ObjEntity> class2ObjEntity = new Coercion<Class, ObjEntity>() {
       public ObjEntity coerce(Class input) {
-        return BaseContext.getThreadObjectContext().getEntityResolver().lookupObjEntity(input);
+        return BaseContext.getThreadObjectContext().getEntityResolver().getObjEntity(input);
       }
     };
     

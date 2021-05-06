@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.cayenne.DataObjectUtils;
+import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -156,7 +156,7 @@ public class PersistentManagerImpl implements PersistentManager {
     Ordering o = new Ordering(name, SortOrder.ASCENDING);
     res.ordering = o;
 
-    ObjEntity ent = context.getEntityResolver().lookupObjEntity(type);
+    ObjEntity ent = context.getEntityResolver().getObjEntity(type);
     ObjAttribute attr = (ObjAttribute) ent.getAttribute(name);
     if (attr != null) {
       sq.addOrdering(o);
@@ -169,16 +169,16 @@ public class PersistentManagerImpl implements PersistentManager {
 
   public <T> T find(Class<T> type, Object id) {
     Object pk = _coercer.coerce(id, pkTypeForEntity(type));
-    return DataObjectUtils.objectForPK(_provider.currentContext(), type, pk);
+    return Cayenne.objectForPK(_provider.currentContext(), type, pk);
   }
 
   public <T> T find(Class<T> type, Map<String, Object> idMap) {
-    return DataObjectUtils.objectForPK(_provider.currentContext(), type, mapIds(null, type, idMap));
+    return Cayenne.objectForPK(_provider.currentContext(), type, mapIds(null, type, idMap));
   }
 
   @SuppressWarnings("unchecked")
   public <T> T find(String entity, Map<String, Object> idMap) {
-    return (T) DataObjectUtils.objectForPK(_provider.currentContext(), entity, mapIds(entity, null, idMap));
+    return (T) Cayenne.objectForPK(_provider.currentContext(), entity, mapIds(entity, null, idMap));
   }
 
   @SuppressWarnings("unchecked")
@@ -203,14 +203,14 @@ public class PersistentManagerImpl implements PersistentManager {
       Object value = _coercer.coerce(pkVals[i], pk.getJavaClass());
       pkMap.put(pks.get(i).getName(), value);
     }
-    return (T) DataObjectUtils.objectForPK(_provider.currentContext(), entity, pkMap);
+    return (T) Cayenne.objectForPK(_provider.currentContext(), entity, pkMap);
   }
 
   private Map<String, Object> mapIds(String entityName, Class<?> entityClass, Map<String, Object> idMap) {
     Map<String, Object> ids = new HashMap<String, Object>();
     ObjEntity entity;
     if (entityName == null) {
-      entity = _provider.currentContext().getEntityResolver().lookupObjEntity(entityClass);
+      entity = _provider.currentContext().getEntityResolver().getObjEntity(entityClass);
     } else {
       entity = _provider.currentContext().getEntityResolver().getObjEntity(entityName);
     }
@@ -226,7 +226,7 @@ public class PersistentManagerImpl implements PersistentManager {
   }
 
   private Class<?> pkTypeForEntity(Class<?> type) {
-    return pkTypeForEntity(_provider.currentContext().getEntityResolver().lookupObjEntity(type));
+    return pkTypeForEntity(_provider.currentContext().getEntityResolver().getObjEntity(type));
   }
 
   private Class<?> pkTypeForEntity(ObjEntity entity) {
@@ -244,7 +244,7 @@ public class PersistentManagerImpl implements PersistentManager {
   }
 
   private Class<?> pkTypeForEntity(Class<?> type, String name) {
-    return pkTypeForEntity(_provider.currentContext().getEntityResolver().lookupObjEntity(type), name);
+    return pkTypeForEntity(_provider.currentContext().getEntityResolver().getObjEntity(type), name);
   }
 
   private Class<?> pkTypeForEntity(ObjEntity entity, String name) {
@@ -259,7 +259,7 @@ public class PersistentManagerImpl implements PersistentManager {
   @SuppressWarnings("unchecked")
   public <T> T find(String entity, Object id) {
     Object pk = _coercer.coerce(id, pkTypeForEntity(entity));
-    return (T) DataObjectUtils.objectForPK(_provider.currentContext(), entity, pk);
+    return (T) Cayenne.objectForPK(_provider.currentContext(), entity, pk);
   }
 
   public <T> List<T> findByProperty(Class<T> type, Object... properties) {

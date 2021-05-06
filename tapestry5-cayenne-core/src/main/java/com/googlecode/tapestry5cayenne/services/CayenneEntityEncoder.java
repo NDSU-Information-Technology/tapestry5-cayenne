@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.apache.cayenne.DataObjectUtils;
 import org.apache.cayenne.ObjectId;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.map.ObjEntity;
@@ -67,14 +66,14 @@ public class CayenneEntityEncoder implements ValueEncoder<Persistent> {
 
       // TODO smells of tight coupling here, having to dig through so many
       // layers of objects.
-      ObjEntity ent = _provider.currentContext().getEntityResolver().lookupObjEntity(obj.getClass());
+      ObjEntity ent = _provider.currentContext().getEntityResolver().getObjEntity(obj.getClass());
       return _encrypter.encrypt(ent.getName() + "::t::" + key);
     }
 
     ObjectId id = obj.getObjectId();
     Map<String, Object> idSnap = id.getIdSnapshot();
     if (idSnap.size() == 1) {
-      final String pk = _coercer.coerce(DataObjectUtils.pkForObject(obj), String.class);
+      final String pk = _coercer.coerce(org.apache.cayenne.Cayenne.pkForObject(obj), String.class);
       return _encrypter.encrypt(id.getEntityName() + "::" + pk);
     }
     StringBuilder b = new StringBuilder(id.getEntityName());

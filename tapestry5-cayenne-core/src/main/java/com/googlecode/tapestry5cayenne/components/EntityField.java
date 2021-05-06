@@ -202,7 +202,7 @@ public class EntityField {
     Expression e = null;
     input = searchType.maskInput(input);
     if (searchProperties == null || searchProperties.trim().equals("")) {
-      ObjEntity entity = provider.currentContext().getEntityResolver().lookupObjEntity(type);
+      ObjEntity entity = provider.currentContext().getEntityResolver().getObjEntity(type);
       Iterator<ObjAttribute> it = entity.getAttributes().iterator();
       if (it.hasNext()) {
         e = ExpressionFactory.likeExp(it.next().getName(), input);

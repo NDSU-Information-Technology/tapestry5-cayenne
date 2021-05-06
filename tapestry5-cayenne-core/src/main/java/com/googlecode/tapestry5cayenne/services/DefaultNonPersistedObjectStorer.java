@@ -13,7 +13,7 @@
 package com.googlecode.tapestry5cayenne.services;
 
 import org.apache.cayenne.Persistent;
-import org.apache.commons.collections.map.LRUMap;
+import org.apache.commons.collections4.map.LRUMap;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 
 import java.util.Map;

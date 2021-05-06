@@ -13,6 +13,7 @@
  */
 package com.googlecode.tapestry5cayenne.services;
 
+import org.apache.cayenne.DataChannel;
 import org.apache.cayenne.ObjectContext;
 
 /**
@@ -33,5 +34,13 @@ public interface ObjectContextProvider {
    * @return a new ObjectContext
    */
   ObjectContext newContext();
+  
+  /**
+   * Creates a new child context,
+   * wrapper for ServerRuntime.newContext(parent)
+   * @param parentChannel
+   * @return
+   */
+  ObjectContext newChildContext(DataChannel parentChannel);
 
 }

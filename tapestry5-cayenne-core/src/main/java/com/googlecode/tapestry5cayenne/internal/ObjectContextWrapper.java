@@ -89,7 +89,8 @@ public class ObjectContextWrapper {
   public ObjectContext getChildContext() {
     ObjectContext context = (ObjectContext) threadContext.get();
     if (context == null) {
-      context = provider.currentContext().createChildContext();
+      
+      context = provider.newChildContext(provider.currentContext());
       threadContext.set(context);
     }
     return context;

@@ -16,7 +16,7 @@ package com.googlecode.tapestry5cayenne.services;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import org.apache.cayenne.DataObjectUtils;
+import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.ObjectId;
 import org.apache.cayenne.Persistent;
@@ -106,14 +106,14 @@ public class TestCayenneEntityEncoder extends Assert {
         // "new" object handling.
         { a3, "Artist::" + "t::" + a3.hashCode() },
         // committed object handling, int pk.
-        { a, "Artist::" + DataObjectUtils.intPKForObject(a) },
+        { a, "Artist::" + Cayenne.intPKForObject(a) },
         // committed object handling non-numeric pk
         { stringPk, "StringPKEntity::testingstrings" },
         // committed object, non INTEGER pks...
-        { tinyPk, "TinyIntPKEntity::" + DataObjectUtils.intPKForObject(tinyPk) },
-        { smallPk, "SmallIntPKEntity::" + DataObjectUtils.intPKForObject(smallPk) },
-        { bigPk, "BigIntPKEntity::" + DataObjectUtils.longPKForObject(bigPk) },
-        { ab, "AcceptedBid::" + DataObjectUtils.intPKForObject(a) + "::" + DataObjectUtils.intPKForObject(b) }
+        { tinyPk, "TinyIntPKEntity::" + Cayenne.intPKForObject(tinyPk) },
+        { smallPk, "SmallIntPKEntity::" + Cayenne.intPKForObject(smallPk) },
+        { bigPk, "BigIntPKEntity::" + Cayenne.longPKForObject(bigPk) },
+        { ab, "AcceptedBid::" + Cayenne.intPKForObject(a) + "::" + Cayenne.intPKForObject(b) }
         // TODO might be nice to have a way to store objs in the url in a
         // "tamper-proof" fashion.
         // at least as an option.
@@ -151,7 +151,7 @@ public class TestCayenneEntityEncoder extends Assert {
     Artist a = _provider.currentContext().newObject(Artist.class);
     a.setName("test");
     _provider.currentContext().commitChanges();
-    String value = "Artist::" + DataObjectUtils.intPKForObject(a);
+    String value = "Artist::" + Cayenne.intPKForObject(a);
 
     EncodedValueEncrypter enc = EasyMock.createMock(EncodedValueEncrypter.class);
     EasyMock.expect(enc.encrypt(value)).andReturn(value);
@@ -208,7 +208,7 @@ public class TestCayenneEntityEncoder extends Assert {
     Artist a = _provider.currentContext().newObject(Artist.class);
     a.setName("test");
     _provider.currentContext().commitChanges();
-    String value = "Artist::" + DataObjectUtils.intPKForObject(a);
+    String value = "Artist::" + Cayenne.intPKForObject(a);
 
     EncodedValueEncrypter enc = EasyMock.createMock(EncodedValueEncrypter.class);
     EasyMock.expect(enc.decrypt(value)).andReturn(value);

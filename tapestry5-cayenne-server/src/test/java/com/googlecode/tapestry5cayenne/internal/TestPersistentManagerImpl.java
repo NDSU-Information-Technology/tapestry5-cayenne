@@ -24,7 +24,7 @@ import java.util.List;
 
 import com.googlecode.tapestry5cayenne.internal.util.MethodWrapper;
 import org.apache.cayenne.BaseContext;
-import org.apache.cayenne.DataObjectUtils;
+import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.exp.Expression;
@@ -197,11 +197,11 @@ public class TestPersistentManagerImpl {
   }
 
   public void testFind_Class() {
-    assertEquals(picasso, _manager.find(Artist.class, DataObjectUtils.intPKForObject(picasso)));
+    assertEquals(picasso, _manager.find(Artist.class, Cayenne.intPKForObject(picasso)));
   }
 
   public void testFind_String() {
-    Artist a = _manager.find("Artist", DataObjectUtils.intPKForObject(dali));
+    Artist a = _manager.find("Artist", Cayenne.intPKForObject(dali));
     assertEquals(dali, a);
   }
 

@@ -15,7 +15,7 @@ package com.googlecode.tapestry5cayenne.integration.app0.pages;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.apache.cayenne.DataObjectUtils;
+import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
@@ -58,7 +58,7 @@ public class CommitAfterTestPage {
       }
     } else {
       // force a DB refresh...
-      artist = (Artist) DataObjectUtils.objectForPK(context, artist.getObjectId());
+      artist = (Artist) Cayenne.objectForPK(context, artist.getObjectId());
     }
   }
 

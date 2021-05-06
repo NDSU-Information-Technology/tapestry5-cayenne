@@ -57,7 +57,7 @@ public class CayenneConstraintGenerator implements ValidationConstraintGenerator
 
     Class<?> beanType = bec.getBeanClass();
     EntityResolver er = this.provider.currentContext().getEntityResolver();
-    ObjEntity oent = er.lookupObjEntity(beanType);
+    ObjEntity oent = er.getObjEntity(beanType);
     if (oent == null) {
       return null;
     }

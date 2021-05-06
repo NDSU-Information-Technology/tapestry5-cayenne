@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.cayenne.DataObjectUtils;
+import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
 import org.apache.tapestry5.ValueEncoder;
@@ -71,7 +71,7 @@ public class TestCayenneEntityPersistentFieldStrategy {
 
   public void testPostChange() {
     _context.commitChanges();
-    _session.setAttribute("CayenneEntity:testPage:foo:bar", "Artist::" + DataObjectUtils.intPKForObject(_data.get(0)));
+    _session.setAttribute("CayenneEntity:testPage:foo:bar", "Artist::" + Cayenne.intPKForObject(_data.get(0)));
     EasyMock.expectLastCall().once();
     EasyMock.replay(_session);
     _strategy.postChange("testPage", "foo", "bar", _data.get(0));
@@ -83,7 +83,7 @@ public class TestCayenneEntityPersistentFieldStrategy {
     _data.get(0).setName("TemporaryChange");
     EasyMock.expect(_session.getAttributeNames("CayenneEntity:testPage:")).andReturn(vals);
     EasyMock.expect(_session.getAttribute("CayenneEntity:testPage:foo:bar"))
-        .andReturn("Artist::" + DataObjectUtils.intPKForObject(_data.get(0)));
+        .andReturn("Artist::" + Cayenne.intPKForObject(_data.get(0)));
     EasyMock.replay(_session);
     Collection<PersistentFieldChange> changes = _strategy.gatherFieldChanges("testPage");
     Assert.assertEquals(changes.size(), 1);
