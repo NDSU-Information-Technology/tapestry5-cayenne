@@ -1,8 +1,12 @@
 package com.googlecode.tapestry5cayenne.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
-import org.apache.cayenne.CayenneDataObject;
+import org.apache.cayenne.BaseDataObject;
+import org.apache.cayenne.exp.Property;
 
 import com.googlecode.tapestry5cayenne.model.Artist;
 
@@ -12,34 +16,51 @@ import com.googlecode.tapestry5cayenne.model.Artist;
  * since it may be overwritten next time code is regenerated.
  * If you need to make any customizations, please use subclass.
  */
-public abstract class _ArtistDetails extends CayenneDataObject {
+public abstract class _ArtistDetails extends BaseDataObject {
 
-    public static final String BIO_PROPERTY = "bio";
-    public static final String BIRTHDATE_PROPERTY = "birthdate";
-    public static final String DEATHDATE_PROPERTY = "deathdate";
-    public static final String ARTIST_PROPERTY = "artist";
+    private static final long serialVersionUID = 1L; 
 
     public static final String ARTISTID_PK_COLUMN = "artistid";
 
+    public static final Property<String> BIO = Property.create("bio", String.class);
+    public static final Property<Date> BIRTHDATE = Property.create("birthdate", Date.class);
+    public static final Property<Date> DEATHDATE = Property.create("deathdate", Date.class);
+    public static final Property<Artist> ARTIST = Property.create("artist", Artist.class);
+
+    protected String bio;
+    protected Date birthdate;
+    protected Date deathdate;
+
+    protected Object artist;
+
     public void setBio(String bio) {
-        writeProperty("bio", bio);
+        beforePropertyWrite("bio", this.bio, bio);
+        this.bio = bio;
     }
+
     public String getBio() {
-        return (String)readProperty("bio");
+        beforePropertyRead("bio");
+        return this.bio;
     }
 
     public void setBirthdate(Date birthdate) {
-        writeProperty("birthdate", birthdate);
+        beforePropertyWrite("birthdate", this.birthdate, birthdate);
+        this.birthdate = birthdate;
     }
+
     public Date getBirthdate() {
-        return (Date)readProperty("birthdate");
+        beforePropertyRead("birthdate");
+        return this.birthdate;
     }
 
     public void setDeathdate(Date deathdate) {
-        writeProperty("deathdate", deathdate);
+        beforePropertyWrite("deathdate", this.deathdate, deathdate);
+        this.deathdate = deathdate;
     }
+
     public Date getDeathdate() {
-        return (Date)readProperty("deathdate");
+        beforePropertyRead("deathdate");
+        return this.deathdate;
     }
 
     public void setArtist(Artist artist) {
@@ -50,5 +71,74 @@ public abstract class _ArtistDetails extends CayenneDataObject {
         return (Artist)readProperty("artist");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "bio":
+                return this.bio;
+            case "birthdate":
+                return this.birthdate;
+            case "deathdate":
+                return this.deathdate;
+            case "artist":
+                return this.artist;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "bio":
+                this.bio = (String)val;
+                break;
+            case "birthdate":
+                this.birthdate = (Date)val;
+                break;
+            case "deathdate":
+                this.deathdate = (Date)val;
+                break;
+            case "artist":
+                this.artist = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.bio);
+        out.writeObject(this.birthdate);
+        out.writeObject(this.deathdate);
+        out.writeObject(this.artist);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.bio = (String)in.readObject();
+        this.birthdate = (Date)in.readObject();
+        this.deathdate = (Date)in.readObject();
+        this.artist = in.readObject();
+    }
 
 }

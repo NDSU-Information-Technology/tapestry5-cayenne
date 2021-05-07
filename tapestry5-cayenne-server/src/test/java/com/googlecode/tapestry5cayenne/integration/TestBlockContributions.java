@@ -49,7 +49,7 @@ public class TestBlockContributions extends Assert {
     _registry = _tester.getRegistry();
     _provider = _registry.getService(ObjectContextProvider.class);
     _data = TestUtils.basicData(_provider.currentContext());
-    new Ordering(Artist.NAME_PROPERTY, SortOrder.ASCENDING).orderList(_data);
+    new Ordering(Artist.NAME.getName(), SortOrder.ASCENDING).orderList(_data);
     _encoder = _registry.getService("CayenneEntityEncoder", ValueEncoder.class);
   }
 
@@ -176,7 +176,7 @@ public class TestBlockContributions extends Assert {
     // creates two paintings for each artist.
     List<Painting> paintings = TestUtils.addPaintings(_data.get(0), 18, _provider.currentContext());
     for (Painting p : paintings) {
-      _data.get(0).addToPaintingList(p);
+      _data.get(0).addToPaintingsByTitle(p);
     }
     Document doc = assertToManyHead();
     List<Element> els = TestUtils.DOMFindAll(doc.getRootElement(), "body/dl/dd");

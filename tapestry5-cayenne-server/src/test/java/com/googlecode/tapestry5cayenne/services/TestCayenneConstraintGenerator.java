@@ -78,14 +78,14 @@ public class TestCayenneConstraintGenerator extends Assert {
 
   public void test_noconstraints_returns_null() {
     EasyMock.expect(bec.getBeanClass()).andStubReturn(StringPKEntity.class);
-    EasyMock.expect(propCtxt.getPropertyId()).andReturn(StringPKEntity.INT_PROP1_PROPERTY);
+    EasyMock.expect(propCtxt.getPropertyId()).andReturn(StringPKEntity.INT_PROP1.getName());
     replay();
     assertNull(gen.buildConstraints(int.class, new NullAnnotationProvider()));
   }
 
   public void test_mandatory_property_returns_required() {
     EasyMock.expect(bec.getBeanClass()).andStubReturn(Bid.class);
-    EasyMock.expect(propCtxt.getPropertyId()).andReturn(Bid.AMOUNT_PROPERTY);
+    EasyMock.expect(propCtxt.getPropertyId()).andReturn(Bid.AMOUNT.getName());
     replay();
     assertEquals(gen.buildConstraints(String.class, new NullAnnotationProvider()), Arrays.asList("required"));
   }
@@ -93,28 +93,28 @@ public class TestCayenneConstraintGenerator extends Assert {
   public void test_mandatory_relationship_returns_required() {
 
     EasyMock.expect(bec.getBeanClass()).andStubReturn(Bid.class);
-    EasyMock.expect(propCtxt.getPropertyId()).andReturn(Bid.PAINTING_PROPERTY);
+    EasyMock.expect(propCtxt.getPropertyId()).andReturn(Bid.PAINTING.getName());
     replay();
     assertEquals(gen.buildConstraints(Painting.class, new NullAnnotationProvider()), Arrays.asList("required"));
   }
 
   public void test_tomany_relationship_returns_nothing() {
     EasyMock.expect(bec.getBeanClass()).andStubReturn(Artist.class);
-    EasyMock.expect(propCtxt.getPropertyId()).andReturn(Artist.PAINTING_LIST_PROPERTY);
+    EasyMock.expect(propCtxt.getPropertyId()).andReturn(Artist.PAINTING_LIST.getName());
     replay();
     assertNull(gen.buildConstraints(List.class, new NullAnnotationProvider()));
   }
 
   public void test_maxlength_property() {
     EasyMock.expect(bec.getBeanClass()).andStubReturn(StringPKEntity.class);
-    EasyMock.expect(propCtxt.getPropertyId()).andReturn(StringPKEntity.STRING_PROP2_PROPERTY);
+    EasyMock.expect(propCtxt.getPropertyId()).andReturn(StringPKEntity.STRING_PROP2.getName());
     replay();
     assertEquals(gen.buildConstraints(String.class, new NullAnnotationProvider()), Arrays.asList("maxlength=64"));
   }
 
   public void test_maxlength_and_required() {
     EasyMock.expect(bec.getBeanClass()).andStubReturn(Painting.class);
-    EasyMock.expect(propCtxt.getPropertyId()).andReturn(Painting.TITLE_PROPERTY);
+    EasyMock.expect(propCtxt.getPropertyId()).andReturn(Painting.TITLE.getName());
     replay();
 
     assertEquals(gen.buildConstraints(String.class, new NullAnnotationProvider()),
@@ -123,7 +123,7 @@ public class TestCayenneConstraintGenerator extends Assert {
 
   public void test_toonerelationship_usingpkside_notrequired() {
     EasyMock.expect(bec.getBeanClass()).andStubReturn(Artist.class);
-    EasyMock.expect(propCtxt.getPropertyId()).andReturn(Artist.CURRENT_BID_PROPERTY);
+    EasyMock.expect(propCtxt.getPropertyId()).andReturn(Artist.CURRENT_BID.getName());
     replay();
 
     assertNull(gen.buildConstraints(List.class, new NullAnnotationProvider()));
@@ -135,7 +135,7 @@ public class TestCayenneConstraintGenerator extends Assert {
     // which makes the property absolutely mandatory, or the obj won't have a
     // pk! Test to make sure this is correctly handled.
     EasyMock.expect(bec.getBeanClass()).andStubReturn(ArtistDetails.class);
-    EasyMock.expect(propCtxt.getPropertyId()).andReturn(ArtistDetails.ARTIST_PROPERTY);
+    EasyMock.expect(propCtxt.getPropertyId()).andReturn(ArtistDetails.ARTIST.getName());
     replay();
 
     assertEquals(gen.buildConstraints(Artist.class, new NullAnnotationProvider()), Arrays.asList("required"));

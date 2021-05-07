@@ -1,9 +1,13 @@
 package com.googlecode.tapestry5cayenne.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.apache.cayenne.CayenneDataObject;
+import org.apache.cayenne.BaseDataObject;
+import org.apache.cayenne.exp.Property;
 
 import com.googlecode.tapestry5cayenne.model.AcceptedBid;
 import com.googlecode.tapestry5cayenne.model.Artist;
@@ -15,33 +19,45 @@ import com.googlecode.tapestry5cayenne.model.Painting;
  * since it may be overwritten next time code is regenerated.
  * If you need to make any customizations, please use subclass.
  */
-public abstract class _Bid extends CayenneDataObject {
+public abstract class _Bid extends BaseDataObject {
 
-    public static final String AMOUNT_PROPERTY = "amount";
-    public static final String ACCEPTING_ARTISTS_PROPERTY = "acceptingArtists";
-    public static final String BIDDER_PROPERTY = "bidder";
-    public static final String PAINTING_PROPERTY = "painting";
+    private static final long serialVersionUID = 1L; 
 
     public static final String BIDID_PK_COLUMN = "bidid";
 
+    public static final Property<BigDecimal> AMOUNT = Property.create("amount", BigDecimal.class);
+    public static final Property<List<AcceptedBid>> ACCEPTING_ARTISTS = Property.create("acceptingArtists", List.class);
+    public static final Property<Artist> BIDDER = Property.create("bidder", Artist.class);
+    public static final Property<Painting> PAINTING = Property.create("painting", Painting.class);
+
+    protected BigDecimal amount;
+
+    protected Object acceptingArtists;
+    protected Object bidder;
+    protected Object painting;
+
     public void setAmount(BigDecimal amount) {
-        writeProperty("amount", amount);
+        beforePropertyWrite("amount", this.amount, amount);
+        this.amount = amount;
     }
+
     public BigDecimal getAmount() {
-        return (BigDecimal)readProperty("amount");
+        beforePropertyRead("amount");
+        return this.amount;
     }
 
     public void addToAcceptingArtists(AcceptedBid obj) {
         addToManyTarget("acceptingArtists", obj, true);
     }
+
     public void removeFromAcceptingArtists(AcceptedBid obj) {
         removeToManyTarget("acceptingArtists", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<AcceptedBid> getAcceptingArtists() {
         return (List<AcceptedBid>)readProperty("acceptingArtists");
     }
-
 
     public void setBidder(Artist bidder) {
         setToOneTarget("bidder", bidder, true);
@@ -51,7 +67,6 @@ public abstract class _Bid extends CayenneDataObject {
         return (Artist)readProperty("bidder");
     }
 
-
     public void setPainting(Painting painting) {
         setToOneTarget("painting", painting, true);
     }
@@ -60,5 +75,74 @@ public abstract class _Bid extends CayenneDataObject {
         return (Painting)readProperty("painting");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "amount":
+                return this.amount;
+            case "acceptingArtists":
+                return this.acceptingArtists;
+            case "bidder":
+                return this.bidder;
+            case "painting":
+                return this.painting;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "amount":
+                this.amount = (BigDecimal)val;
+                break;
+            case "acceptingArtists":
+                this.acceptingArtists = val;
+                break;
+            case "bidder":
+                this.bidder = val;
+                break;
+            case "painting":
+                this.painting = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.amount);
+        out.writeObject(this.acceptingArtists);
+        out.writeObject(this.bidder);
+        out.writeObject(this.painting);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.amount = (BigDecimal)in.readObject();
+        this.acceptingArtists = in.readObject();
+        this.bidder = in.readObject();
+        this.painting = in.readObject();
+    }
 
 }

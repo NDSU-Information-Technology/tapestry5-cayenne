@@ -60,15 +60,15 @@ public class TestCayenneBeanModelSource extends Assert {
   @DataProvider(name = "property_tests")
   Object[][] propertyTests() {
     Map<String, String> stringPKProps = new HashMap<String, String>();
-    stringPKProps.put(StringPKEntity.ID_PROPERTY, "text");
-    stringPKProps.put(StringPKEntity.INT_PROP1_PROPERTY, "number");
-    stringPKProps.put(StringPKEntity.STRING_PROP1_PROPERTY, "longtext");
-    stringPKProps.put(StringPKEntity.STRING_PROP2_PROPERTY, "text");
+    stringPKProps.put(StringPKEntity.ID.getName(), "text");
+    stringPKProps.put(StringPKEntity.INT_PROP1.getName(), "number");
+    stringPKProps.put(StringPKEntity.STRING_PROP1.getName(), "longtext");
+    stringPKProps.put(StringPKEntity.STRING_PROP2.getName(), "text");
     Map<String, String> artistProps = new HashMap<String, String>();
     // name is a longvarchar, so, longtext.
-    artistProps.put(Artist.NAME_PROPERTY, "longtext");
-    artistProps.put(Artist.CURRENT_BID_PROPERTY, "to_one");
-    artistProps.put(Artist.DETAILS_PROPERTY, "to_one");
+    artistProps.put(Artist.NAME.getName(), "longtext");
+    artistProps.put(Artist.CURRENT_BID.getName(), "to_one");
+    artistProps.put(Artist.DETAILS.getName(), "to_one");
     Map<String, String> artistPropsWithRelationship = new HashMap<String, String>(artistProps);
     artistPropsWithRelationship.put("paintingList", "to_many_collection");
     artistPropsWithRelationship.put("paintingsByTitle", "to_many_map");
@@ -76,16 +76,16 @@ public class TestCayenneBeanModelSource extends Assert {
     artistPropsWithRelationship.put("currentBid", "to_one");
     artistPropsWithRelationship.put("acceptedBids", "to_many_collection");
     Map<String, String> paintingProps = new HashMap<String, String>();
-    paintingProps.put(Painting.ARTIST_PROPERTY, "to_one");
-    paintingProps.put(Painting.PRICE_PROPERTY, "number");
-    paintingProps.put(Painting.TITLE_PROPERTY, "longtext");
+    paintingProps.put(Painting.ARTIST.getName(), "to_one");
+    paintingProps.put(Painting.PRICE.getName(), "number");
+    paintingProps.put(Painting.TITLE.getName(), "longtext");
     Map<String, String> bidProps = new HashMap<String, String>();
-    bidProps.put(Bid.AMOUNT_PROPERTY, "number");
-    bidProps.put(Bid.PAINTING_PROPERTY, "painting");
-    bidProps.put(Bid.BIDDER_PROPERTY, "to_one");
+    bidProps.put(Bid.AMOUNT.getName(), "number");
+    bidProps.put(Bid.PAINTING.getName(), "painting");
+    bidProps.put(Bid.BIDDER.getName(), "to_one");
 
     Map<String, String> bidPropsWithRelationship = new HashMap<String, String>(bidProps);
-    bidPropsWithRelationship.put(Bid.ACCEPTING_ARTISTS_PROPERTY, "to_many_collection");
+    bidPropsWithRelationship.put(Bid.ACCEPTING_ARTISTS.getName(), "to_many_collection");
     return new Object[][] { { StringPKEntity.class, true, stringPKProps },
         { StringPKEntity.class, false, stringPKProps }, { Artist.class, true, artistProps },
         { Artist.class, false, artistPropsWithRelationship, }, { Painting.class, true, paintingProps,

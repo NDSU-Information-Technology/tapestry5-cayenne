@@ -22,10 +22,13 @@ import org.apache.cayenne.BaseContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.access.DataNode;
 import org.apache.cayenne.access.DbGenerator;
-import org.apache.cayenne.conf.Configuration;
-import org.apache.cayenne.conf.DefaultConfiguration;
+import org.apache.cayenne.configuration.server.DataContextFactory;
+import org.apache.cayenne.configuration.server.ServerRuntime;
+//import org.apache.cayenne.conf.Configuration;
+//import org.apache.cayenne.conf.DefaultConfiguration;
 import org.apache.cayenne.dba.DbAdapter;
 import org.apache.cayenne.dba.hsqldb.HSQLDBAdapter;
+import org.apache.cayenne.log.NoopJdbcEventLogger;
 import org.apache.cayenne.map.DataMap;
 import org.apache.tapestry5.dom.Element;
 import org.apache.tapestry5.dom.Node;
@@ -52,21 +55,23 @@ public class TestUtils {
    * @throws Exception
    */
   public static void setupdb() throws Exception {
-    DefaultConfiguration c = new DefaultConfiguration("cayenne.xml");
-    Configuration.initializeSharedConfiguration(c);
+    ServerRuntime cayenneRuntime = ServerRuntime.builder().addConfig("cayenne-App0.xml").build();
+//    DefaultConfiguration c = new DefaultConfiguration("cayenne.xml");
+//    Configuration.initializeSharedConfiguration(c);
     DbAdapter adapt = HSQLDBAdapter.class.newInstance();
-    DataContext dc = DataContext.createDataContext();
-    for (Object obj : dc.getEntityResolver().getDataMaps()) {
+    ObjectContext dc = cayenneRuntime.newContext();
+//    DataContext dc = new DataContextFactory().createContext(cayenneRuntime.getChannel()); 
+//        cayenneRuntime.newContext();
+
+    for (Object obj : cayenneRuntime.getDataDomain().getDataMaps()) {
       DataMap map = (DataMap) obj;
-      DataNode node = dc.getParentDataDomain().lookupDataNode(map);
-      DataSource src = node.getDataSource();
-      DbGenerator dbgen = new DbGenerator(adapt, map);
+      DbGenerator dbgen = new DbGenerator(adapt, map, NoopJdbcEventLogger.getInstance());
       dbgen.setShouldDropTables(true);
       dbgen.setShouldDropPKSupport(true);
       dbgen.setShouldCreatePKSupport(true);
       dbgen.setShouldCreateFKConstraints(true);
       dbgen.setShouldCreateTables(true);
-      dbgen.runGenerator(src);
+      dbgen.runGenerator(cayenneRuntime.getDataSource());
     }
     BaseContext.bindThreadObjectContext(dc);
   }

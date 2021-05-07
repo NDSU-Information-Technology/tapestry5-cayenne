@@ -12,15 +12,14 @@
  */
 package com.googlecode.tapestry5cayenne.integration;
 
-import org.apache.tapestry5.test.AbstractIntegrationTestSuite;
 import org.apache.tapestry5.test.SeleniumTestCase;
 import org.testng.annotations.Test;
 
 @Test(sequential = true, groups = "integration")
-public class TapestryCayenneIntegrationTest extends AbstractIntegrationTestSuite {
+public class TapestryCayenneIntegrationTest extends SeleniumTestCase {
 
   public TapestryCayenneIntegrationTest() {
-    super("src/test/app0");
+//    super("src/test/app0");
   }
 
   public void test_commit_after() {

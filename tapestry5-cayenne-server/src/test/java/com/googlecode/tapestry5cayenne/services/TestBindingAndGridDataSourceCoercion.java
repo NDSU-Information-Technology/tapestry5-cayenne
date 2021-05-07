@@ -52,7 +52,7 @@ public class TestBindingAndGridDataSourceCoercion extends Assert {
     registry = TestUtils.setupRegistry("App0", TapestryCayenneModule.class);
     context = registry.getService(ObjectContextProvider.class).newContext();
     data = TestUtils.basicData(context);
-    new Ordering(Artist.NAME_PROPERTY, SortOrder.ASCENDING).orderList(data);
+    new Ordering(Artist.NAME.getName(), SortOrder.ASCENDING).orderList(data);
   }
 
   @SuppressWarnings("unchecked")
@@ -116,7 +116,7 @@ public class TestBindingAndGridDataSourceCoercion extends Assert {
       }
 
     });
-    new Ordering(Painting.TITLE_PROPERTY, SortOrder.ASCENDING).orderList(paints);
+    new Ordering(Painting.TITLE.getName(), SortOrder.ASCENDING).orderList(paints);
     assertEquals(ds.getAvailableRows(), paints.size());
     for (int i = 0; i < paints.size(); i++) {
       assertEquals(((Painting) ds.getRowValue(i)).getObjectId(), paints.get(i).getObjectId());

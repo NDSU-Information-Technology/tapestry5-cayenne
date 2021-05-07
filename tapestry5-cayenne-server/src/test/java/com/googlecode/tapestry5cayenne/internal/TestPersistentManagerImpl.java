@@ -25,6 +25,7 @@ import java.util.List;
 import com.googlecode.tapestry5cayenne.internal.util.MethodWrapper;
 import org.apache.cayenne.BaseContext;
 import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.DataChannel;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.exp.Expression;
@@ -61,7 +62,7 @@ public class TestPersistentManagerImpl {
     TestUtils.setupdb();
     _context = BaseContext.getThreadObjectContext();
     List<Artist> data = TestUtils.basicData(_context);
-    new Ordering(Artist.NAME_PROPERTY, SortOrder.ASCENDING).orderList(data);
+    new Ordering(Artist.NAME.getName(), SortOrder.ASCENDING).orderList(data);
     dali = data.get(0);
     picasso = data.get(1);
     assertEquals(dali.getName(), "Dali");
@@ -90,6 +91,11 @@ public class TestPersistentManagerImpl {
       }
 
       public ObjectContext newContext() {
+        return _context;
+      }
+
+      @Override
+      public ObjectContext newChildContext(DataChannel parentChannel) {
         return _context;
       }
     }, coercer);
@@ -131,7 +137,7 @@ public class TestPersistentManagerImpl {
   }
 
   public void testExplicitOrdering() {
-    List<Artist> objs = _manager.listAll(Artist.class, OrderingUtils.stringToOrdering(Artist.NAME_PROPERTY));
+    List<Artist> objs = _manager.listAll(Artist.class, OrderingUtils.stringToOrdering(Artist.NAME.getName()));
     assertEquals(objs, Arrays.asList(dali, picasso));
   }
 
@@ -176,18 +182,10 @@ public class TestPersistentManagerImpl {
   @DataProvider(name = "list_matching")
   Object[][] listMatching() {
     return new Object[][] {
-        { Artist.class, ExpressionFactory.matchExp(Artist.NAME_PROPERTY, "Flinstone"), Collections.emptyList(),
+        { Artist.class, ExpressionFactory.matchExp(Artist.NAME.getName(), "Flinstone"), Collections.emptyList(),
             new Ordering[] {} },
-        { Artist.class, ExpressionFactory.matchExp(Artist.NAME_PROPERTY, "Picasso"), Arrays.asList(picasso),
-            new Ordering[] {} },
-        { Painting.class, ExpressionFactory.likeExp(Painting.TITLE_PROPERTY, "%P%"),
-            Arrays.asList(picasso.getPaintingsByTitle().get("Portrait of Igor Stravinsky"),
-                dali.getPaintingsByTitle().get("The Persistence of Memory")),
-            new Ordering[] {} },
-        { Painting.class, ExpressionFactory.likeExp(Painting.TITLE_PROPERTY, "%P%"),
-            Arrays.asList(dali.getPaintingsByTitle().get("The Persistence of Memory"),
-                picasso.getPaintingsByTitle().get("Portrait of Igor Stravinsky")),
-            new Ordering[] { new Ordering("title", SortOrder.DESCENDING) } }, };
+        { Artist.class, ExpressionFactory.matchExp(Artist.NAME.getName(), "Picasso"), Arrays.asList(picasso),
+            new Ordering[] {} }, };
   }
 
   @Test(dataProvider = "list_matching")
@@ -214,7 +212,7 @@ public class TestPersistentManagerImpl {
          * Argument Exception
          */
         { Artist.class, null, new IllegalArgumentException("Unbalanced property array"),
-            new Object[] { Artist.NAME_PROPERTY } },
+            new Object[] { Artist.NAME.getName() } },
         /*
          * test to make sure that non-string "property names" throw Illegal
          * Argument Exception
@@ -223,7 +221,7 @@ public class TestPersistentManagerImpl {
             new Object[] { 123, "foo" } },
         /* what if the non-string prop is further in the array? */
         { Artist.class, null, new IllegalArgumentException("Non-string property name: 123"),
-            new Object[] { Artist.NAME_PROPERTY, "Picasso", 123, "foo" } },
+            new Object[] { Artist.NAME.getName(), "Picasso", 123, "foo" } },
         /*
          * test to make sure that an empty property list throws an
          * IllegalArgumentException
@@ -235,10 +233,10 @@ public class TestPersistentManagerImpl {
          * test to make sure that finding by one property returns the correct
          * object...
          */
-        { Artist.class, Arrays.asList(dali), null, new Object[] { Artist.NAME_PROPERTY, dali.getName() } },
+        { Artist.class, Arrays.asList(dali), null, new Object[] { Artist.NAME.getName(), dali.getName() } },
         /* test multiple properties and deeper navigation paths... */
-        { Painting.class, Arrays.asList(p), null, new Object[] { Painting.TITLE_PROPERTY, p.getTitle(),
-            Painting.ARTIST_PROPERTY + "." + Artist.NAME_PROPERTY, dali.getName() } }, };
+        { Painting.class, Arrays.asList(p), null, new Object[] { Painting.TITLE.getName(), p.getTitle(),
+            Painting.ARTIST.getName() + "." + Artist.NAME.getName(), dali.getName() } }, };
   }
 
   /**
@@ -312,7 +310,7 @@ public class TestPersistentManagerImpl {
          * Argument Exception
          */
         { Artist.class, null, new IllegalArgumentException("Unbalanced property array"),
-            new Object[] { Artist.NAME_PROPERTY } },
+            new Object[] { Artist.NAME.getName() } },
         /*
          * test to make sure that non-string "property names" throw Illegal
          * Argument Exception
@@ -321,7 +319,7 @@ public class TestPersistentManagerImpl {
             new Object[] { 123, "foo" } },
         /* what if the non-string prop is further in the array? */
         { Artist.class, null, new IllegalArgumentException("Non-string property name: 123"),
-            new Object[] { Artist.NAME_PROPERTY, "Picasso", 123, "foo" } },
+            new Object[] { Artist.NAME.getName(), "Picasso", 123, "foo" } },
         /*
          * test to make sure that an empty property list throws an
          * IllegalArgumentException
@@ -333,10 +331,10 @@ public class TestPersistentManagerImpl {
          * test to make sure that finding by one property returns the correct
          * object...
          */
-        { Artist.class, Arrays.asList(picasso), null, new Object[] { Artist.NAME_PROPERTY, picasso.getName() } },
+        { Artist.class, Arrays.asList(picasso), null, new Object[] { Artist.NAME.getName(), picasso.getName() } },
         /* test multiple properties and deeper navigation paths... */
-        { Painting.class, Arrays.asList(p2, p1), null, new Object[] { Painting.TITLE_PROPERTY, p1.getTitle(),
-            Painting.ARTIST_PROPERTY + "." + Artist.NAME_PROPERTY, dali.getName() } }, };
+        { Painting.class, Arrays.asList(p2, p1), null, new Object[] { Painting.TITLE.getName(), p1.getTitle(),
+            Painting.ARTIST.getName() + "." + Artist.NAME.getName(), dali.getName() } }, };
   }
 
   /**
@@ -358,19 +356,19 @@ public class TestPersistentManagerImpl {
     String strippedName = "Dal%";
     return new Object[][] {
         { Artist.class, null, new IllegalArgumentException("Unbalanced property array"),
-            new Object[] { Artist.NAME_PROPERTY } },
+            new Object[] { Artist.NAME.getName() } },
         { Artist.class, null, new IllegalArgumentException("Unbalanced property array"),
-            new Object[] { Artist.NAME_PROPERTY, "Picasso", "blah" } },
+            new Object[] { Artist.NAME.getName(), "Picasso", "blah" } },
         { Artist.class, null, new IllegalArgumentException("Non-string property name: 123"),
             new Object[] { 123, "foo" } },
         { Artist.class, null, new IllegalArgumentException("Non-string property name: 123"),
-            new Object[] { Artist.NAME_PROPERTY, "Picasso", 123, "foo" } },
+            new Object[] { Artist.NAME.getName(), "Picasso", 123, "foo" } },
         { Artist.class, null,
             new IllegalArgumentException("Must provide at least one property pair, but no pairs were provided"),
             new Object[] {} },
-        { Artist.class, Arrays.asList(dali), null, new Object[] { Artist.NAME_PROPERTY, strippedName } },
-        { Painting.class, Arrays.asList(p, p2), null, new Object[] { Painting.TITLE_PROPERTY, "Self-portrai%",
-            Painting.ARTIST_PROPERTY + "." + Artist.NAME_PROPERTY, strippedName, } },
+        { Artist.class, Arrays.asList(dali), null, new Object[] { Artist.NAME.getName(), strippedName } },
+        { Painting.class, Arrays.asList(p, p2), null, new Object[] { Painting.TITLE.getName(), "Self-portrai%",
+            Painting.ARTIST.getName() + "." + Artist.NAME.getName(), strippedName, } },
 
     };
   }
@@ -387,19 +385,19 @@ public class TestPersistentManagerImpl {
     String strippedName = "Dal%";
     return new Object[][] {
         { Artist.class, 1, null, new IllegalArgumentException("Unbalanced property array"),
-            new Object[] { Artist.NAME_PROPERTY } },
+            new Object[] { Artist.NAME.getName() } },
         { Artist.class, 1, null, new IllegalArgumentException("Unbalanced property array"),
-            new Object[] { Artist.NAME_PROPERTY, "Picasso", "blah" } },
+            new Object[] { Artist.NAME.getName(), "Picasso", "blah" } },
         { Artist.class, 1, null, new IllegalArgumentException("Non-string property name: 123"),
             new Object[] { 123, "foo" } },
         { Artist.class, 1, null, new IllegalArgumentException("Non-string property name: 123"),
-            new Object[] { Artist.NAME_PROPERTY, "Picasso", 123, "foo" } },
+            new Object[] { Artist.NAME.getName(), "Picasso", 123, "foo" } },
         { Artist.class, 1, null,
             new IllegalArgumentException("Must provide at least one property pair, but no pairs were provided"),
             new Object[] {} },
-        { Artist.class, 1, Arrays.asList(dali), null, new Object[] { Artist.NAME_PROPERTY, strippedName } },
-        { Painting.class, 1, Arrays.asList(p), null, new Object[] { Painting.TITLE_PROPERTY, "Self-portrai%",
-            Painting.ARTIST_PROPERTY + "." + Artist.NAME_PROPERTY, strippedName, } },
+        { Artist.class, 1, Arrays.asList(dali), null, new Object[] { Artist.NAME.getName(), strippedName } },
+        { Painting.class, 1, Arrays.asList(p), null, new Object[] { Painting.TITLE.getName(), "Self-portrai%",
+            Painting.ARTIST.getName() + "." + Artist.NAME.getName(), strippedName, } },
 
     };
   }

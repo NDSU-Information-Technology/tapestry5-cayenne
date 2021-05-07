@@ -1,6 +1,11 @@
 package com.googlecode.tapestry5cayenne.model.auto;
 
-import org.apache.cayenne.CayenneDataObject;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
+import org.apache.cayenne.BaseDataObject;
+import org.apache.cayenne.exp.Property;
 
 import com.googlecode.tapestry5cayenne.model.Artist;
 
@@ -10,26 +15,39 @@ import com.googlecode.tapestry5cayenne.model.Artist;
  * since it may be overwritten next time code is regenerated.
  * If you need to make any customizations, please use subclass.
  */
-public abstract class _Painting extends CayenneDataObject {
+public abstract class _Painting extends BaseDataObject {
 
-    public static final String PRICE_PROPERTY = "price";
-    public static final String TITLE_PROPERTY = "title";
-    public static final String ARTIST_PROPERTY = "artist";
+    private static final long serialVersionUID = 1L; 
 
     public static final String ID_PK_COLUMN = "id";
 
+    public static final Property<Double> PRICE = Property.create("price", Double.class);
+    public static final Property<String> TITLE = Property.create("title", String.class);
+    public static final Property<Artist> ARTIST = Property.create("artist", Artist.class);
+
+    protected Double price;
+    protected String title;
+
+    protected Object artist;
+
     public void setPrice(Double price) {
-        writeProperty("price", price);
+        beforePropertyWrite("price", this.price, price);
+        this.price = price;
     }
+
     public Double getPrice() {
-        return (Double)readProperty("price");
+        beforePropertyRead("price");
+        return this.price;
     }
 
     public void setTitle(String title) {
-        writeProperty("title", title);
+        beforePropertyWrite("title", this.title, title);
+        this.title = title;
     }
+
     public String getTitle() {
-        return (String)readProperty("title");
+        beforePropertyRead("title");
+        return this.title;
     }
 
     public void setArtist(Artist artist) {
@@ -40,5 +58,67 @@ public abstract class _Painting extends CayenneDataObject {
         return (Artist)readProperty("artist");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "price":
+                return this.price;
+            case "title":
+                return this.title;
+            case "artist":
+                return this.artist;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "price":
+                this.price = (Double)val;
+                break;
+            case "title":
+                this.title = (String)val;
+                break;
+            case "artist":
+                this.artist = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.price);
+        out.writeObject(this.title);
+        out.writeObject(this.artist);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.price = (Double)in.readObject();
+        this.title = (String)in.readObject();
+        this.artist = in.readObject();
+    }
 
 }

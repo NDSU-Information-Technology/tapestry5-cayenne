@@ -1,12 +1,15 @@
 package com.googlecode.tapestry5cayenne.model.auto;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.cayenne.CayenneDataObject;
+import org.apache.cayenne.BaseDataObject;
+import org.apache.cayenne.exp.Property;
 
 import com.googlecode.tapestry5cayenne.model.AcceptedBid;
-import com.googlecode.tapestry5cayenne.model.ArtistDetails;
 import com.googlecode.tapestry5cayenne.model.Bid;
 import com.googlecode.tapestry5cayenne.model.Painting;
 
@@ -16,35 +19,49 @@ import com.googlecode.tapestry5cayenne.model.Painting;
  * since it may be overwritten next time code is regenerated.
  * If you need to make any customizations, please use subclass.
  */
-public abstract class _Artist extends CayenneDataObject {
+public abstract class _Artist extends BaseDataObject {
 
-    public static final String NAME_PROPERTY = "name";
-    public static final String ACCEPTED_BIDS_PROPERTY = "acceptedBids";
-    public static final String CURRENT_BID_PROPERTY = "currentBid";
-    public static final String DETAILS_PROPERTY = "details";
-    public static final String PAINTING_LIST_PROPERTY = "paintingList";
-    public static final String PAINTINGS_BY_TITLE_PROPERTY = "paintingsByTitle";
+    private static final long serialVersionUID = 1L; 
 
     public static final String ID_PK_COLUMN = "id";
 
+    public static final Property<String> NAME = Property.create("name", String.class);
+    public static final Property<List<AcceptedBid>> ACCEPTED_BIDS = Property.create("acceptedBids", List.class);
+    public static final Property<Bid> CURRENT_BID = Property.create("currentBid", Bid.class);
+    public static final Property<List<AcceptedBid>> DETAILS = Property.create("details", List.class);
+    public static final Property<List<Painting>> PAINTING_LIST = Property.create("paintingList", List.class);
+    public static final Property<Map<String, Painting>> PAINTINGS_BY_TITLE = Property.create("paintingsByTitle", Map.class);
+
+    protected String name;
+
+    protected Object acceptedBids;
+    protected Object currentBid;
+    protected Object details;
+    protected Object paintingList;
+    protected Object paintingsByTitle;
+
     public void setName(String name) {
-        writeProperty("name", name);
+        beforePropertyWrite("name", this.name, name);
+        this.name = name;
     }
+
     public String getName() {
-        return (String)readProperty("name");
+        beforePropertyRead("name");
+        return this.name;
     }
 
     public void addToAcceptedBids(AcceptedBid obj) {
         addToManyTarget("acceptedBids", obj, true);
     }
+
     public void removeFromAcceptedBids(AcceptedBid obj) {
         removeToManyTarget("acceptedBids", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<AcceptedBid> getAcceptedBids() {
         return (List<AcceptedBid>)readProperty("acceptedBids");
     }
-
 
     public void setCurrentBid(Bid currentBid) {
         setToOneTarget("currentBid", currentBid, true);
@@ -54,38 +71,127 @@ public abstract class _Artist extends CayenneDataObject {
         return (Bid)readProperty("currentBid");
     }
 
-
-    public void setDetails(ArtistDetails details) {
-        setToOneTarget("details", details, true);
+    public void addToDetails(AcceptedBid obj) {
+        addToManyTarget("details", obj, true);
     }
 
-    public ArtistDetails getDetails() {
-        return (ArtistDetails)readProperty("details");
+    public void removeFromDetails(AcceptedBid obj) {
+        removeToManyTarget("details", obj, true);
     }
 
+    @SuppressWarnings("unchecked")
+    public List<AcceptedBid> getDetails() {
+        return (List<AcceptedBid>)readProperty("details");
+    }
 
     public void addToPaintingList(Painting obj) {
         addToManyTarget("paintingList", obj, true);
     }
+
     public void removeFromPaintingList(Painting obj) {
         removeToManyTarget("paintingList", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public List<Painting> getPaintingList() {
         return (List<Painting>)readProperty("paintingList");
     }
 
-
     public void addToPaintingsByTitle(Painting obj) {
         addToManyTarget("paintingsByTitle", obj, true);
     }
+
     public void removeFromPaintingsByTitle(Painting obj) {
         removeToManyTarget("paintingsByTitle", obj, true);
     }
+
     @SuppressWarnings("unchecked")
     public Map<String, Painting> getPaintingsByTitle() {
         return (Map<String, Painting>)readProperty("paintingsByTitle");
     }
 
+    @Override
+    public Object readPropertyDirectly(String propName) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch(propName) {
+            case "name":
+                return this.name;
+            case "acceptedBids":
+                return this.acceptedBids;
+            case "currentBid":
+                return this.currentBid;
+            case "details":
+                return this.details;
+            case "paintingList":
+                return this.paintingList;
+            case "paintingsByTitle":
+                return this.paintingsByTitle;
+            default:
+                return super.readPropertyDirectly(propName);
+        }
+    }
+
+    @Override
+    public void writePropertyDirectly(String propName, Object val) {
+        if(propName == null) {
+            throw new IllegalArgumentException();
+        }
+
+        switch (propName) {
+            case "name":
+                this.name = (String)val;
+                break;
+            case "acceptedBids":
+                this.acceptedBids = val;
+                break;
+            case "currentBid":
+                this.currentBid = val;
+                break;
+            case "details":
+                this.details = val;
+                break;
+            case "paintingList":
+                this.paintingList = val;
+                break;
+            case "paintingsByTitle":
+                this.paintingsByTitle = val;
+                break;
+            default:
+                super.writePropertyDirectly(propName, val);
+        }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        writeSerialized(out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        readSerialized(in);
+    }
+
+    @Override
+    protected void writeState(ObjectOutputStream out) throws IOException {
+        super.writeState(out);
+        out.writeObject(this.name);
+        out.writeObject(this.acceptedBids);
+        out.writeObject(this.currentBid);
+        out.writeObject(this.details);
+        out.writeObject(this.paintingList);
+        out.writeObject(this.paintingsByTitle);
+    }
+
+    @Override
+    protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readState(in);
+        this.name = (String)in.readObject();
+        this.acceptedBids = in.readObject();
+        this.currentBid = in.readObject();
+        this.details = in.readObject();
+        this.paintingList = in.readObject();
+        this.paintingsByTitle = in.readObject();
+    }
 
 }

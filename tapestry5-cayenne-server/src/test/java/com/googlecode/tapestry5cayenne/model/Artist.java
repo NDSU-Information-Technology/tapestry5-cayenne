@@ -12,6 +12,9 @@
  */
 package com.googlecode.tapestry5cayenne.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.googlecode.tapestry5cayenne.annotations.Label;
 import com.googlecode.tapestry5cayenne.model.auto._Artist;
 

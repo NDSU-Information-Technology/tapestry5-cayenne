@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<data-map xmlns="http://cayenne.apache.org/schema/3.0/modelMap"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://cayenne.apache.org/schema/3.0/modelMap http://cayenne.apache.org/schema/3.0/modelMap.xsd"
-  project-version="3.0.0.1">
+<data-map xmlns="http://cayenne.apache.org/schema/10/modelMap"
+	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xsi:schemaLocation="http://cayenne.apache.org/schema/10/modelMap https://cayenne.apache.org/schema/10/modelMap.xsd"
+	 project-version="10">
 	<property name="defaultPackage" value="com.googlecode.tapestry5cayenne.model"/>
 	<db-entity name="AcceptedBids">
 		<db-attribute name="acceptedDate" type="DATE" isMandatory="true"/>
@@ -84,22 +84,22 @@
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="value" type="java.lang.String" db-attribute-path="value"/>
 	</obj-entity>
-	<db-relationship name="acceptor" source="AcceptedBids" target="artists" toMany="false">
+	<db-relationship name="acceptor" source="AcceptedBids" target="artists">
 		<db-attribute-pair source="artistid" target="id"/>
 	</db-relationship>
-	<db-relationship name="bid" source="AcceptedBids" target="bid" toMany="false">
+	<db-relationship name="bid" source="AcceptedBids" target="bid">
 		<db-attribute-pair source="bidid" target="bidid"/>
 	</db-relationship>
-	<db-relationship name="artist" source="artist_details" target="artists" toMany="false">
+	<db-relationship name="artist" source="artist_details" target="artists">
 		<db-attribute-pair source="artistid" target="id"/>
 	</db-relationship>
 	<db-relationship name="acceptedBids" source="artists" target="AcceptedBids" toDependentPK="true" toMany="true">
 		<db-attribute-pair source="id" target="artistid"/>
 	</db-relationship>
-	<db-relationship name="currentBid" source="artists" target="bid" toMany="false">
+	<db-relationship name="currentBid" source="artists" target="bid">
 		<db-attribute-pair source="id" target="bidderid"/>
 	</db-relationship>
-	<db-relationship name="details" source="artists" target="artist_details" toDependentPK="true" toMany="false">
+	<db-relationship name="details" source="artists" target="artist_details" toDependentPK="true">
 		<db-attribute-pair source="id" target="artistid"/>
 	</db-relationship>
 	<db-relationship name="paintingList" source="artists" target="paintings" toMany="true">
@@ -108,13 +108,13 @@
 	<db-relationship name="acceptingArtists" source="bid" target="AcceptedBids" toDependentPK="true" toMany="true">
 		<db-attribute-pair source="bidid" target="bidid"/>
 	</db-relationship>
-	<db-relationship name="bidder" source="bid" target="artists" toMany="false">
+	<db-relationship name="bidder" source="bid" target="artists">
 		<db-attribute-pair source="bidderid" target="id"/>
 	</db-relationship>
-	<db-relationship name="painting" source="bid" target="paintings" toMany="false">
+	<db-relationship name="painting" source="bid" target="paintings">
 		<db-attribute-pair source="paintingid" target="id"/>
 	</db-relationship>
-	<db-relationship name="artist" source="paintings" target="artists" toMany="false">
+	<db-relationship name="artist" source="paintings" target="artists">
 		<db-attribute-pair source="artistid" target="id"/>
 	</db-relationship>
 	<db-relationship name="bids" source="paintings" target="bid" toMany="true">
@@ -124,12 +124,25 @@
 	<obj-relationship name="bid" source="AcceptedBid" target="Bid" deleteRule="Nullify" db-relationship-path="bid"/>
 	<obj-relationship name="acceptedBids" source="Artist" target="AcceptedBid" deleteRule="Cascade" db-relationship-path="acceptedBids"/>
 	<obj-relationship name="currentBid" source="Artist" target="Bid" deleteRule="Nullify" db-relationship-path="currentBid"/>
-	<obj-relationship name="details" source="Artist" target="ArtistDetails" deleteRule="Cascade" db-relationship-path="details"/>
+	<obj-relationship name="details" source="Artist" target="AcceptedBid" deleteRule="Cascade" db-relationship-path="acceptedBids"/>
 	<obj-relationship name="paintingList" source="Artist" target="Painting" deleteRule="Cascade" db-relationship-path="paintingList"/>
-	<obj-relationship name="paintingsByTitle" source="Artist" target="Painting" collection-type="java.util.Map" map-key="title" deleteRule="Cascade" db-relationship-path="paintingList"/>
+	<obj-relationship name="paintingsByTitle" source="Artist" target="Painting" collection-type="java.util.Map" map-key="title" deleteRule="Nullify" db-relationship-path="paintingList"/>
 	<obj-relationship name="artist" source="ArtistDetails" target="Artist" deleteRule="Nullify" db-relationship-path="artist"/>
 	<obj-relationship name="acceptingArtists" source="Bid" target="AcceptedBid" deleteRule="Deny" db-relationship-path="acceptingArtists"/>
 	<obj-relationship name="bidder" source="Bid" target="Artist" deleteRule="Nullify" db-relationship-path="bidder"/>
 	<obj-relationship name="painting" source="Bid" target="Painting" db-relationship-path="painting"/>
 	<obj-relationship name="artist" source="Painting" target="Artist" deleteRule="Nullify" db-relationship-path="artist"/>
+	<cgen xmlns="http://cayenne.apache.org/schema/10/cgen">
+		<destDir>../java</destDir>
+		<mode>all</mode>
+		<template>templates/v4_1/subclass.vm</template>
+		<superTemplate>templates/v4_1/superclass.vm</superTemplate>
+		<outputPattern>*.java</outputPattern>
+		<makePairs>true</makePairs>
+		<usePkgPath>true</usePkgPath>
+		<overwrite>false</overwrite>
+		<createPropertyNames>false</createPropertyNames>
+		<createPKProperties>false</createPKProperties>
+		<client>false</client>
+	</cgen>
 </data-map>

@@ -58,7 +58,7 @@ public class TestToManyControl {
 
   public BeanModel<Artist> getArtistModel() {
     BeanModel<Artist> ret = source.createDisplayModel(Artist.class, messages);
-    ret.include(Artist.PAINTING_LIST_PROPERTY, Artist.PAINTINGS_BY_TITLE_PROPERTY);
+    ret.include(Artist.PAINTING_LIST.getName(), Artist.PAINTINGS_BY_TITLE.getName());
     return ret;
   }
 
