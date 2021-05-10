@@ -58,15 +58,7 @@
         </dependency>
     </dependencies>
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.cayenne.plugins</groupId>
-                <artifactId>maven-cayenne-modeler-plugin</artifactId>
-                <configuration>
-                    <modelFile>src/test/resources/cayenne.xml</modelFile>
-                </configuration>
-            </plugin>
-            
+        <plugins>            
             <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
