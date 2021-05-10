@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Built-By: rfrovarp
 Build-Jdk: 1.7.0_51
-Tapestry-Module-Classes: com.googlecode.tapestry5cayenne.services.TapestryCayenneModule
+Tapestry-Module-Classes: edu.ndsu.eci.tapestry5cayenne.services.TapestryCayenneModule
 Created-By: Apache Maven 3.0.4
 Archiver-Version: Plexus Archiver
 

@@ -5,7 +5,7 @@ Tapestry5-Cayenne Server Module
 	
 +---------------------------------------------------------+
 <dependency>
-    <groupId>com.googlecode.tapestry5-cayenne</groupId>
+    <groupId>edu.ndsu.eci.tapestry5-cayenne</groupId>
     <artifactId>tapestry5-cayenne-server</artifactId>
     <version>0.1-SNAPSHOT</version>
 </dependency>

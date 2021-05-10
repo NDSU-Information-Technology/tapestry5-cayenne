@@ -160,7 +160,7 @@
           <configuration>
             <archive>
               <manifestEntries>
-                <Tapestry-Module-Classes>com.googlecode.tapestry5cayenne.services.TapestryCayenneModule
+                <Tapestry-Module-Classes>edu.ndsu.eci.tapestry5cayenne.services.TapestryCayenneModule
                 </Tapestry-Module-Classes>
               </manifestEntries>
             </archive>
