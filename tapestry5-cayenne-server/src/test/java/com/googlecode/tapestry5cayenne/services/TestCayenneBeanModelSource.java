@@ -105,6 +105,10 @@ public class TestCayenneBeanModelSource extends Assert {
     BeanModel<?> model = filterReadonly ? _source.createEditModel(type, msgs) : _source.createDisplayModel(type, msgs);
     List<String> names = model.getPropertyNames();
     for (String key : props.keySet()) {
+      System.out.println(key);
+      if (!names.contains(key)) {
+        System.out.println("MISSSSINGGGGG " + key + " " + type);
+      }
       assertTrue(names.contains(key), "Model missing property " + key);
       assertEquals(model.get(key).getDataType(), props.get(key), "Property has wrong datatype");
     }

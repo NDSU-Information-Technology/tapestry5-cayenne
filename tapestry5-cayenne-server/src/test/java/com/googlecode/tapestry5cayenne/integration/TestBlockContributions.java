@@ -23,6 +23,7 @@ import org.apache.tapestry5.ValueEncoder;
 import org.apache.tapestry5.dom.Document;
 import org.apache.tapestry5.dom.Element;
 import org.apache.tapestry5.dom.Node;
+import org.apache.tapestry5.ioc.IOCUtilities;
 import org.apache.tapestry5.ioc.Registry;
 import org.apache.tapestry5.test.PageTester;
 import org.testng.Assert;
@@ -30,9 +31,12 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.*;
 
-@Test(groups = "all", sequential = true)
+@Test(groups = "all", singleThreaded = true)
 public class TestBlockContributions extends Assert {
 
   private Registry _registry;
@@ -108,7 +112,15 @@ public class TestBlockContributions extends Assert {
     doc = _tester.submitForm(form, params);
 
     // make sure that the select is correctly selected.
-    els = TestUtils.DOMFindAll(doc.getRootElement(), "body/form/div/div/select/option");
+    els = TestUtils.DOMFindAll(doc.getRootElement(), "body/form/select/option");
+    try {
+      PrintWriter writer = new PrintWriter(new File("/tmp/doc.txt"));
+      doc.toMarkup(writer);
+      writer.close();
+    } catch (FileNotFoundException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
     assertFalse(els.isEmpty());
     // find the option corresponding to _data.get(1).
     // remember, painting.artist is required, so no blank option, now that
@@ -130,9 +142,10 @@ public class TestBlockContributions extends Assert {
     Document doc = _tester.renderPage("TestToManyControl");
     // make sure the stylesheet shows up.
     List<Element> els = TestUtils.DOMFindAll(doc.getRootElement(), "head/link");
+
     // should be 2: one for tapestry, one for t5cayenne
-    assertEquals(els.size(), 2);
-    assertTrue(els.get(1).getAttribute("href").contains("ToManyViewer.css"));
+    assertEquals(els.size(), 7);
+    assertTrue(els.get(6).getAttribute("href").contains("ToManyViewer.css"));
     // ok... make sure we have the right thing on the bean display...
     return doc;
   }
@@ -176,9 +189,11 @@ public class TestBlockContributions extends Assert {
     // creates two paintings for each artist.
     List<Painting> paintings = TestUtils.addPaintings(_data.get(0), 18, _provider.currentContext());
     for (Painting p : paintings) {
-      _data.get(0).addToPaintingsByTitle(p);
+      _data.get(0).addToPaintingList(p);
     }
+    _data.get(0).getObjectContext().commitChanges();
     Document doc = assertToManyHead();
+
     List<Element> els = TestUtils.DOMFindAll(doc.getRootElement(), "body/dl/dd");
     assertEquals(els.get(0).getChildMarkup().trim(), "20 associated items");
     assertEquals(els.get(1).getChildMarkup().trim(), "20 associated items");

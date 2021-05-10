@@ -124,9 +124,9 @@
 	<obj-relationship name="bid" source="AcceptedBid" target="Bid" deleteRule="Nullify" db-relationship-path="bid"/>
 	<obj-relationship name="acceptedBids" source="Artist" target="AcceptedBid" deleteRule="Cascade" db-relationship-path="acceptedBids"/>
 	<obj-relationship name="currentBid" source="Artist" target="Bid" deleteRule="Nullify" db-relationship-path="currentBid"/>
-	<obj-relationship name="details" source="Artist" target="AcceptedBid" deleteRule="Cascade" db-relationship-path="acceptedBids"/>
 	<obj-relationship name="paintingList" source="Artist" target="Painting" deleteRule="Cascade" db-relationship-path="paintingList"/>
 	<obj-relationship name="paintingsByTitle" source="Artist" target="Painting" collection-type="java.util.Map" map-key="title" deleteRule="Nullify" db-relationship-path="paintingList"/>
+	<obj-relationship name="details" source="Artist" target="ArtistDetails" deleteRule="Nullify" db-relationship-path="details"/>
 	<obj-relationship name="artist" source="ArtistDetails" target="Artist" deleteRule="Nullify" db-relationship-path="artist"/>
 	<obj-relationship name="acceptingArtists" source="Bid" target="AcceptedBid" deleteRule="Deny" db-relationship-path="acceptingArtists"/>
 	<obj-relationship name="bidder" source="Bid" target="Artist" deleteRule="Nullify" db-relationship-path="bidder"/>

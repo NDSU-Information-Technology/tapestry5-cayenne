@@ -10,6 +10,7 @@ import org.apache.cayenne.BaseDataObject;
 import org.apache.cayenne.exp.Property;
 
 import com.googlecode.tapestry5cayenne.model.AcceptedBid;
+import com.googlecode.tapestry5cayenne.model.ArtistDetails;
 import com.googlecode.tapestry5cayenne.model.Bid;
 import com.googlecode.tapestry5cayenne.model.Painting;
 
@@ -28,7 +29,7 @@ public abstract class _Artist extends BaseDataObject {
     public static final Property<String> NAME = Property.create("name", String.class);
     public static final Property<List<AcceptedBid>> ACCEPTED_BIDS = Property.create("acceptedBids", List.class);
     public static final Property<Bid> CURRENT_BID = Property.create("currentBid", Bid.class);
-    public static final Property<List<AcceptedBid>> DETAILS = Property.create("details", List.class);
+    public static final Property<ArtistDetails> DETAILS = Property.create("details", ArtistDetails.class);
     public static final Property<List<Painting>> PAINTING_LIST = Property.create("paintingList", List.class);
     public static final Property<Map<String, Painting>> PAINTINGS_BY_TITLE = Property.create("paintingsByTitle", Map.class);
 
@@ -71,17 +72,12 @@ public abstract class _Artist extends BaseDataObject {
         return (Bid)readProperty("currentBid");
     }
 
-    public void addToDetails(AcceptedBid obj) {
-        addToManyTarget("details", obj, true);
+    public void setDetails(ArtistDetails details) {
+        setToOneTarget("details", details, true);
     }
 
-    public void removeFromDetails(AcceptedBid obj) {
-        removeToManyTarget("details", obj, true);
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<AcceptedBid> getDetails() {
-        return (List<AcceptedBid>)readProperty("details");
+    public ArtistDetails getDetails() {
+        return (ArtistDetails)readProperty("details");
     }
 
     public void addToPaintingList(Painting obj) {

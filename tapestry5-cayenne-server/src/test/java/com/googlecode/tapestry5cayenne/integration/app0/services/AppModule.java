@@ -25,6 +25,7 @@ import org.apache.tapestry5.http.services.ApplicationInitializerFilter;
 import org.apache.tapestry5.http.services.Context;
 import org.apache.tapestry5.ioc.annotations.SubModule;
 
+import com.googlecode.tapestry5cayenne.T5CayenneConstants;
 import com.googlecode.tapestry5cayenne.TestUtils;
 import com.googlecode.tapestry5cayenne.model.Artist;
 import com.googlecode.tapestry5cayenne.services.TapestryCayenneModule;
@@ -35,6 +36,8 @@ public class AppModule {
   public static void contributeApplicationDefaults(MappedConfiguration<String, String> configuration) {
     configuration.add(SymbolConstants.SUPPORTED_LOCALES, "en");
     configuration.add(SymbolConstants.PRODUCTION_MODE, "false");
+    configuration.add(T5CayenneConstants.PROJECT_FILE, "cayenne-App0.xml");
+    
   }
 
   public static void contributeApplicationInitializer(OrderedConfiguration<ApplicationInitializerFilter> conf) {

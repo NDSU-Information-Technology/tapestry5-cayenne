@@ -13,7 +13,9 @@
 package com.googlecode.tapestry5cayenne;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -22,7 +24,9 @@ import org.apache.cayenne.BaseContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.access.DataNode;
 import org.apache.cayenne.access.DbGenerator;
+import org.apache.cayenne.configuration.DataNodeDescriptor;
 import org.apache.cayenne.configuration.server.DataContextFactory;
+import org.apache.cayenne.configuration.server.DbAdapterFactory;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 //import org.apache.cayenne.conf.Configuration;
 //import org.apache.cayenne.conf.DefaultConfiguration;
@@ -35,12 +39,22 @@ import org.apache.tapestry5.dom.Node;
 import org.apache.tapestry5.http.internal.SingleKeySymbolProvider;
 import org.apache.tapestry5.http.internal.TapestryAppInitializer;
 import org.apache.tapestry5.internal.InternalConstants;
+import org.apache.tapestry5.internal.services.PersistentFieldManager;
 import org.apache.tapestry5.internal.test.PageTesterModule;
+import org.apache.tapestry5.ioc.IOCUtilities;
 import org.apache.tapestry5.ioc.Registry;
+import org.apache.tapestry5.ioc.RegistryBuilder;
+import org.apache.tapestry5.ioc.internal.services.MapSymbolProvider;
 import org.apache.tapestry5.ioc.services.SymbolProvider;
+import org.apache.tapestry5.modules.TapestryModule;
+import org.apache.tapestry5.services.ComponentClassResolver;
+import org.apache.tapestry5.services.ValueEncoderSource;
+import org.apache.tapestry5.services.transform.InjectionProvider2;
 
 import com.googlecode.tapestry5cayenne.model.Artist;
 import com.googlecode.tapestry5cayenne.model.Painting;
+import com.googlecode.tapestry5cayenne.services.ObjectContextProvider;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,7 +72,15 @@ public class TestUtils {
     ServerRuntime cayenneRuntime = ServerRuntime.builder().addConfig("cayenne-App0.xml").build();
 //    DefaultConfiguration c = new DefaultConfiguration("cayenne.xml");
 //    Configuration.initializeSharedConfiguration(c);
-    DbAdapter adapt = HSQLDBAdapter.class.newInstance();
+//    DbAdapter adapt = HSQLDBAdapter.class.newInstance();
+    
+    DbAdapterFactory adapterFactory = cayenneRuntime.getInjector().getInstance(DbAdapterFactory.class);
+    DataNodeDescriptor nodeDescriptor = new DataNodeDescriptor();
+    nodeDescriptor.setAdapterType("org.apache.cayenne.dba.hsqldb.HSQLDBAdapter");
+
+    DbAdapter adapt = adapterFactory.createAdapter(nodeDescriptor, cayenneRuntime.getDataSource());
+
+    
     ObjectContext dc = cayenneRuntime.newContext();
 //    DataContext dc = new DataContextFactory().createContext(cayenneRuntime.getChannel()); 
 //        cayenneRuntime.newContext();
@@ -131,15 +153,21 @@ public class TestUtils {
    * @return the initialized service/ioc registry.
    */
   public static Registry setupRegistry(String appName, Class<?>... modules) {
-    SymbolProvider provider = new SingleKeySymbolProvider(InternalConstants.TAPESTRY_APP_PACKAGE_PARAM,
-        "com.googlecode.tapestry5cayenne.integration");
+    Map<String, String> symbols = new HashMap<>();
+    symbols.put(InternalConstants.TAPESTRY_APP_PACKAGE_PARAM, "com.googlecode.tapestry5cayenne.integration");
+    symbols.put(T5CayenneConstants.PROJECT_FILE, "cayenne-App0.xml");
+    SymbolProvider provider = new MapSymbolProvider(symbols);
     TapestryAppInitializer initializer = new TapestryAppInitializer(logger, provider, appName,
         PageTesterModule.TEST_MODE);
 
     if (modules.length > 0) {
+      for (Class clazz : modules) {
+        System.out.println(clazz);
+      }
       initializer.addModules(modules);
     }
-
+//    IOCUtilities.addDefaultModules(null);
+    initializer.addModules(TapestryModule.class);
     Registry ret = initializer.createRegistry();
     return ret;
   }

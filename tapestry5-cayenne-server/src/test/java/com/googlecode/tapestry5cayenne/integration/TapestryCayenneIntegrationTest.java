@@ -15,7 +15,7 @@ package com.googlecode.tapestry5cayenne.integration;
 import org.apache.tapestry5.test.SeleniumTestCase;
 import org.testng.annotations.Test;
 
-@Test(sequential = true, groups = "integration")
+@Test(singleThreaded = true, groups = "integration")
 public class TapestryCayenneIntegrationTest extends SeleniumTestCase {
 
   public TapestryCayenneIntegrationTest() {

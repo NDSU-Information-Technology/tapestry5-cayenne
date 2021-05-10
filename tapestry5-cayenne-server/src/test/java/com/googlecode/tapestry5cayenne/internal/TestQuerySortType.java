@@ -26,7 +26,7 @@ import org.testng.annotations.Test;
 
 import com.googlecode.tapestry5cayenne.internal.QuerySortType;
 
-@Test(sequential = true, groups = "all")
+@Test(singleThreaded = true, groups = "all")
 public class TestQuerySortType {
 
   List<SimpleTestBean> _values;
