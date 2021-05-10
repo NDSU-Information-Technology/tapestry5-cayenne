@@ -17,7 +17,7 @@
   </licenses>
   <scm>
     <url>https://github.com/NDSU-Information-Technology/tapestry5-cayenne</url>
-    <developerConnection>scm:git:ssh://git@github.com:NDSU-Information-Technology/tapestry5-cayenne.git</developerConnection>
+    <developerConnection>scm:git:ssh://git@github.com/NDSU-Information-Technology/tapestry5-cayenne.git</developerConnection>
   </scm>
   <developers>
     <developer>
