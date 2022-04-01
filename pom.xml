@@ -190,7 +190,7 @@
   </build>
 
   <properties>
-    <cayenne-release-version>4.1</cayenne-release-version>
+    <cayenne-release-version>4.1.1</cayenne-release-version>
     <tapestry-release-version>5.7.2</tapestry-release-version>
   </properties>
 
