@@ -230,6 +230,9 @@ public class PersistentManagerImpl implements PersistentManager {
   }
 
   private Class<?> pkTypeForEntity(ObjEntity entity) {
+    if (entity == null) {
+      return null;
+    }
     Collection<ObjAttribute> atts = entity.getPrimaryKeys();
     if (atts.size() != 1) {
       throw new RuntimeException(
@@ -258,7 +261,11 @@ public class PersistentManagerImpl implements PersistentManager {
 
   @SuppressWarnings("unchecked")
   public <T> T find(String entity, Object id) {
-    Object pk = _coercer.coerce(id, pkTypeForEntity(entity));
+    Class clazz = pkTypeForEntity(entity);
+    if (clazz == null) {
+      return null;
+    }
+    Object pk = _coercer.coerce(id, clazz);
     return (T) Cayenne.objectForPK(_provider.currentContext(), entity, pk);
   }
 
