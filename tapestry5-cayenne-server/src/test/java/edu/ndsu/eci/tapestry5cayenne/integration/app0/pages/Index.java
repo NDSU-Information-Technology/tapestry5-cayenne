@@ -13,9 +13,9 @@
  */
 package edu.ndsu.eci.tapestry5cayenne.integration.app0.pages;
 
+import org.apache.cayenne.BaseContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.map.ObjEntity;
-import org.apache.tapestry5.annotations.SessionState;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import edu.ndsu.eci.tapestry5cayenne.annotations.Cayenne;
@@ -27,19 +27,16 @@ import java.util.List;
 
 public class Index {
 
-  @SessionState
-  private DataContext _context;
-
   @Inject
   @Cayenne
   private ObjectContextProvider _provider;
 
   public int getCurrentCacheSize() {
-    return _context.getObjectStore().getDataRowCache().size();
+    return ((DataContext)BaseContext.getThreadObjectContext()).getObjectStore().getDataRowCache().size();
   }
 
   public int getMaxCacheSize() {
-    return _context.getObjectStore().getDataRowCache().maximumSize();
+    return ((DataContext)BaseContext.getThreadObjectContext()).getObjectStore().getDataRowCache().maximumSize();
   }
 
   public List<ObjEntity> getObjEntities() {

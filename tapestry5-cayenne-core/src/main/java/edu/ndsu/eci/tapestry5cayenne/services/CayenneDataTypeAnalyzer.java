@@ -53,7 +53,8 @@ public class CayenneDataTypeAnalyzer implements DataTypeAnalyzer {
   }
 
   public String identifyDataType(PropertyAdapter adapter) {
-    EntityResolver er = _provider.currentContext().getEntityResolver();
+    // just get a new context to get resolver, it's sending back a string
+    EntityResolver er = _provider.newContext().getEntityResolver();
     Class<?> type = _environment.peek(BeanModelTypeHolder.class).getType();
     ObjEntity ent = er.getObjEntity(type);
 

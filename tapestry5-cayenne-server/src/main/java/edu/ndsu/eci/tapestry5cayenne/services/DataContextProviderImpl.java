@@ -18,10 +18,8 @@ import org.apache.cayenne.BaseContext;
 import org.apache.cayenne.DataChannel;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.tapestry5.ioc.annotations.Symbol;
-import org.apache.tapestry5.services.ApplicationStateManager;
 
 import edu.ndsu.eci.tapestry5cayenne.T5CayenneConstants;
-import edu.ndsu.eci.tapestry5cayenne.services.ObjectContextProvider;
 
 /**
  * Implementation of provider for DataContext.
@@ -31,11 +29,9 @@ import edu.ndsu.eci.tapestry5cayenne.services.ObjectContextProvider;
  */
 public class DataContextProviderImpl implements ObjectContextProvider {
 
-  private final ApplicationStateManager asm;
   private final ServerRuntime serverRuntime;
 
-  public DataContextProviderImpl(final ApplicationStateManager asm, @Symbol(T5CayenneConstants.PROJECT_FILE) String projectFile) {
-    this.asm = asm;
+  public DataContextProviderImpl(@Symbol(T5CayenneConstants.PROJECT_FILE) String projectFile) {
     try {
       this.serverRuntime = ServerRuntime.builder().addConfig(projectFile).build();
     } catch (Exception e) {
@@ -47,18 +43,12 @@ public class DataContextProviderImpl implements ObjectContextProvider {
 
   public ObjectContext currentContext() {
     try {
-      return BaseContext.getThreadObjectContext();
+      ObjectContext context = BaseContext.getThreadObjectContext();
+      return context;
     } catch (final IllegalStateException exception) {
-      // note that asm is a thread/request-specific service
-      // there are fringe cases, thus far only encountered during testing, where
-      // the request is over, but we want to access the session-associated
-      // data context, if any. So we fall back to check for said ObjectContext.
-      if (asm.exists(ObjectContext.class)) {
-        return asm.get(ObjectContext.class);
-      }
       // it would be nice to throw an exception here, but that's a fundamental
       // change of behavior for this service.
-      return null;
+      return newContext();
     }
   }
 

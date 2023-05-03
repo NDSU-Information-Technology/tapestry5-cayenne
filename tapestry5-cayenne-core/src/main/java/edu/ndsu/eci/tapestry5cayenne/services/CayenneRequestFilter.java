@@ -21,7 +21,6 @@ import org.apache.tapestry5.http.services.Request;
 import org.apache.tapestry5.http.services.RequestFilter;
 import org.apache.tapestry5.http.services.RequestHandler;
 import org.apache.tapestry5.http.services.Response;
-import org.apache.tapestry5.services.ApplicationStateManager;
 
 /**
  * Provides a RequestFilter which ensures that there is a DataContext associated
@@ -31,23 +30,15 @@ import org.apache.tapestry5.services.ApplicationStateManager;
  */
 public class CayenneRequestFilter implements RequestFilter {
 
-  private final ApplicationStateManager asm;
   private final ObjectContextProvider provider;
 
-  public CayenneRequestFilter(final ApplicationStateManager asm, final ObjectContextProvider provider) {
-    this.asm = asm;
+  public CayenneRequestFilter(final ObjectContextProvider provider) {
     this.provider = provider;
   }
 
   public boolean service(Request request, Response response, RequestHandler handler) throws IOException {
-    ObjectContext oc;
-    if (asm.exists(ObjectContext.class)) {
-      oc = asm.get(ObjectContext.class);
-    } else {
-      oc = provider.currentContext() != null ? provider.currentContext() : provider.newContext();
-      asm.set(ObjectContext.class, oc);
-    }
-
+    // make each context exist for just this request being serviced
+    ObjectContext oc = provider.newContext();
     BaseContext.bindThreadObjectContext(oc);
     try {
       return handler.service(request, response);

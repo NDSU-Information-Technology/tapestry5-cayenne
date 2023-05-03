@@ -18,13 +18,13 @@ import edu.ndsu.eci.tapestry5cayenne.model.Painting;
 import edu.ndsu.eci.tapestry5cayenne.services.ObjectContextProvider;
 
 import org.apache.cayenne.Persistent;
+import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.tapestry5.ValueEncoder;
 import org.apache.tapestry5.dom.Document;
 import org.apache.tapestry5.dom.Element;
 import org.apache.tapestry5.dom.Node;
-import org.apache.tapestry5.ioc.IOCUtilities;
 import org.apache.tapestry5.ioc.Registry;
 import org.apache.tapestry5.test.PageTester;
 import org.testng.Assert;
@@ -79,7 +79,7 @@ public class TestBlockContributions extends Assert {
     // so children size should be the same as data size.
     el = doc.getElementById("toOneList");
     assertEquals(el.getChildren().size(), _data.size());
-
+    DataContext.bindThreadObjectContext(_data.get(0).getObjectContext());
     // we expect the list of items to be sorted by the @Label.
     Collections.sort(_data, new Comparator<Artist>() {
       public int compare(Artist o1, Artist o2) {
@@ -93,6 +93,7 @@ public class TestBlockContributions extends Assert {
       Persistent obj = _encoder.toValue(val);
       assertEquals(obj, a, "Incorrect order of persistent objects!");
     }
+    DataContext.bindThreadObjectContext(null);
   }
 
   /**
@@ -222,11 +223,13 @@ public class TestBlockContributions extends Assert {
     Iterator<Node> children = el.getChildren().iterator();
     // skip the first node: it's blank.
     children.next();
+    DataContext.bindThreadObjectContext(_data.get(0).getObjectContext());
     for (Artist a : _data) {
       Element option = (Element) children.next();
       String val = option.getAttribute("value");
       Persistent obj = _encoder.toValue(val);
       assertEquals(obj, a, "Incorrect order of persistent objects!");
     }
+    DataContext.bindThreadObjectContext(null);
   }
 }
